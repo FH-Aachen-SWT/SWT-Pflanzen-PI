@@ -6,7 +6,7 @@
 
 Im Zentrum steht eine reale Pflanze, deren Zustand mittels Sensorik erfasst und in Form einer virtuellen, pixelartbasierten Figur auf einem Display dargestellt wird – inspiriert vom Prinzip klassischer Tamagotchis. Die digitale Pflanze reagiert emotional auf den Pflegezustand (z. B. glücklich, traurig, erschöpft) und schafft so eine unmittelbare Rückkopplung zwischen Handlung und Wirkung.
 
-Der Projektantrag entstand in Kooperation mit dem **Beitragsservice NRW** und verfolgt einen pädagogisch geprägten Ansatz.
+Der Projektantrag entstand in Kooperation mit dem **Beitragsservice** und verfolgt einen pädagogisch geprägten Ansatz.
 
 ---
 
