@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="PflanzenPi.Application\PflanzenPi.Application.csproj" />
+  <Project Path="PflanzenPi.Plants/PflanzenPi.Plants.csproj" />
+  <Project Path="PflanzenPi.Sensor/PflanzenPi.Sensor.csproj" />
+  <Project Path="PflanzenPi.UI/PflanzenPi.UI.csproj" />
 </Solution>

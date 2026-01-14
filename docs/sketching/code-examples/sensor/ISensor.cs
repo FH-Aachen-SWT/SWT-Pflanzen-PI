@@ -2,6 +2,6 @@ namespace sensor;
 
 public interface ISensor<out TData>
 {
-    event Action<TData?, TData> OnDatenChanged;
+    event SensorDataChangedEvent<TData> OnDatenChanged;
     TData? Current { get; }
 }
