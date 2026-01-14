@@ -1,0 +1,3 @@
+PI: username=plantuser
+    password=plantpass
+    hostname=plantagotchi

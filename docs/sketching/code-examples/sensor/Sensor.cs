@@ -2,8 +2,8 @@ namespace sensor;
 
 public abstract class Sensor<TData> : ISensor<TData>
 {
-    public event Action<TData?, TData>? OnDatenChanged;
-    public TData? Current { get; private set; }
+    public event SensorDataChangedEvent<TData>? OnDatenChanged;
+    public TData? Current { get; protected set; }
 
     public void Publish(TData data)
     {
