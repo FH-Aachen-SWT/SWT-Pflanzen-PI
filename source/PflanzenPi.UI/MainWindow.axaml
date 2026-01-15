@@ -7,5 +7,5 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PflanzenPi.UI.MainWindow"
         Title="PflanzenPi.UI">
-    Welcome to Avalonia!
+    <TextBlock Text="{Binding Tamagotchi.CurrentMoistureStatus}"></TextBlock>
 </Window>

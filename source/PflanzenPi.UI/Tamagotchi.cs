@@ -1,6 +1,16 @@
-﻿namespace PflanzenPi.UI;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PflanzenPi.Plant;
 
-public class Tamagotchi
+namespace PflanzenPi.UI;
+
+public partial class Tamagotchi : ObservableObject
 {
+    [ObservableProperty] private MoistureStatus currentMoistureStatus;
     
+    [ObservableProperty] private string currentImageString;
+
+    public Tamagotchi()
+    {
+        CurrentMoistureStatus = MoistureStatus.NichtTest;
+    }
 }
