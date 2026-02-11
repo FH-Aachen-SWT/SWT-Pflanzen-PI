@@ -11,7 +11,7 @@ public class Plant
     
     public MoistureStatusChangedEvent? OnMoistureStatusChanged;
     
-    public readonly IMoistureBehaviour _moistureBehaviour;
+    private readonly IMoistureBehaviour _moistureBehaviour;
 
     /// <summary>
     /// Constructor
@@ -30,13 +30,14 @@ public class Plant
         }
         moistureSensor.OnDataChanged += UpdateMoisture;
     }
+    
 
     /// <summary>
     /// Calls for interpretation of moisture status when moisture has changed. Emits moisture status changed event when moisture status has changed.
     /// </summary>
     /// <param name="prevMoisture">Previous moisture</param>
     /// <param name="nextMoisture">Next / Current moisture</param>
-    public void UpdateMoisture(Moisture? prevMoisture, Moisture nextMoisture)
+    protected void UpdateMoisture(Moisture? prevMoisture, Moisture nextMoisture)
     {
         MoistureStatus? prevStatus = null;
         MoistureStatus nextStatus;
@@ -45,7 +46,7 @@ public class Plant
             prevStatus = _moistureBehaviour.Interpret(prevMoisture);
         }
         nextStatus = _moistureBehaviour.Interpret(nextMoisture);
-        if (prevStatus is null || prevStatus != nextStatus)
+        if (prevStatus is null || (prevMoisture != null && prevMoisture == 0) || prevStatus != nextStatus)
         {
             OnMoistureStatusChanged?.Invoke(nextStatus);
         }
