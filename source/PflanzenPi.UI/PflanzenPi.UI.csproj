@@ -29,4 +29,9 @@
   <ItemGroup>
     <ProjectReference Include="..\PflanzenPi.Plants\PflanzenPi.Plants.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PflanzenPi.Plants\PflanzenPi.Plants.csproj" />
+    <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
+  </ItemGroup>
 </Project>
