@@ -1,7 +1,10 @@
-﻿namespace PflanzenPi.Plant;
+﻿namespace PflanzenPi.Plants;
 
 public enum MoistureStatus
 {
-    Test,
-    NichtTest,
+    VeryDry,
+    Dry,
+    Satisfied,
+    Wet,
+    VeryWet,
 }

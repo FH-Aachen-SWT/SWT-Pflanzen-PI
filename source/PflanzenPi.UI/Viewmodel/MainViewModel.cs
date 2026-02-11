@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
-using PflanzenPi.Plant;
+using PflanzenPi.UI.Tamagotchis;
 
 namespace PflanzenPi.UI.Viewmodel;
 
@@ -12,16 +12,8 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private Tamagotchi tamagotchi;
 
-    public MainViewModel()
+    public MainViewModel(Tamagotchi tamagotchi)
     {
-        tamagotchi  = new Tamagotchi();
-        Test();
+        Tamagotchi = tamagotchi;
     }
-
-    public void Test()
-    {
-        
-    }
-    
-    
 }

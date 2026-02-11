@@ -1,4 +1,6 @@
-﻿namespace PflanzenPi.Sensor.Mocks;
+﻿using System.Diagnostics;
+
+namespace PflanzenPi.Sensor.Mocks;
 
 public class MockMoistureSensor : Sensor<Moisture>
 {
@@ -6,12 +8,13 @@ public class MockMoistureSensor : Sensor<Moisture>
 
     public MockMoistureSensor()
     {
-        _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(5));
+        _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1));
     }
     
     private void SimuliereLesen(object? _)
     {
         var moisture = (float) Random.Shared.NextDouble() * 100f;
         Publish(new Moisture(moisture));
+        Console.WriteLine($"MOCK READ MOISTURE:  {moisture}");
     }
 }
