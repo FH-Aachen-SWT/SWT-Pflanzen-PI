@@ -4,14 +4,12 @@ using static PflanzenPi.UI.Tamagotchis.Moods.Mood;
 
 namespace PflanzenPi.UI.Tamagotchis.Personalities;
 
+/// <summary>
+/// Neutral personality
+/// </summary>
 public class NeutralPersonality : IPersonality
 {
-    /// <summary>
-    /// Provides the images 
-    /// </summary>
-    /// <param name="mood"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <inheritdoc/>
     public string ProvideImage(Mood mood)
     {
         return mood switch

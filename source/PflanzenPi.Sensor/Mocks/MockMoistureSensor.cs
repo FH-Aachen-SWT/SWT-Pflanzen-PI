@@ -2,6 +2,9 @@
 
 namespace PflanzenPi.Sensor.Mocks;
 
+/// <summary>
+/// Mock for the moisture sensor
+/// </summary>
 public class MockMoistureSensor : Sensor<Moisture>
 {
     private readonly Timer _timer;
