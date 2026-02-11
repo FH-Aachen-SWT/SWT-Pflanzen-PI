@@ -2,7 +2,7 @@
 
 public abstract class Sensor<TData> : ISensor<TData>
 {
-    public event SensorDataChangedEvent<TData>? OnDatenChanged;
+    public event SensorDataChangedEvent<TData>? OnDataChanged;
     public TData? Current { get; protected set; }
 
     protected void Publish(TData data)

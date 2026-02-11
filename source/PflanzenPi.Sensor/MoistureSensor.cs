@@ -1,6 +1,5 @@
 ﻿namespace PflanzenPi.Sensor;
 
-// Muss noch Singleton sein
 public class MoistureSensor : Sensor<Moisture>
 {
     private readonly Timer _timer;

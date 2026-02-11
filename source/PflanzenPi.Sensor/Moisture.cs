@@ -2,9 +2,7 @@
 
 public class Moisture : SensorData<float>
 {
-    public float Data;
-
-    public Moisture(float data)
+    public Moisture(float data) : base(data)
     {
         if (data < 0 || data > 1000)
         {

@@ -2,7 +2,7 @@
 
 public interface ISensor<out TData>
 {
-    public event SensorDataChangedEvent<TData>? OnDatenChanged;
+    public event SensorDataChangedEvent<TData>? OnDataChanged;
     
     public TData? Current { get; }
 }

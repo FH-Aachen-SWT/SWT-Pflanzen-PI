@@ -14,7 +14,10 @@ public class SensorService
     /// <typeparam name="TData"></typeparam>
     public void Register<TData>(ISensor<TData> sensor) where TData : notnull
     {
-        _sensors[typeof(TData)] = sensor;
+        if (!_sensors.ContainsKey(typeof(TData)))
+        {
+            _sensors[typeof(TData)] = sensor;
+        }
     }
 
     /// <summary>
@@ -22,8 +25,13 @@ public class SensorService
     /// </summary>
     /// <typeparam name="TData"></typeparam>
     /// <returns></returns>
-    public ISensor<TData> Get<TData>() where TData : notnull
+    public ISensor<TData>? Get<TData>() where TData : notnull
     {
-        return (ISensor<TData>) _sensors[typeof(TData)];
+        if (_sensors.ContainsKey(typeof(TData)))
+        {
+            return (ISensor<TData>) _sensors[typeof(TData)];
+        }
+
+        return null;
     }
 }

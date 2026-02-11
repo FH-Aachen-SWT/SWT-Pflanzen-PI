@@ -2,5 +2,10 @@
 
 public abstract class SensorData<T>
 {
-    public T Data { get; }   
+    public T Data { get; }
+
+    public SensorData(T data)
+    {
+        Data = data;
+    }
 }
