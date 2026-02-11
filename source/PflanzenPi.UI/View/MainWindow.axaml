@@ -4,12 +4,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:PflanzenPi.UI.Viewmodel"
         x:DataType="vm:MainViewModel"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+        Height="480" Width="320"  
         x:Class="PflanzenPi.UI.MainWindow"
         Title="PflanzenPi.UI">
-    <StackPanel Width="300" Height="300">
-        <TextBlock Text="{Binding Tamagotchi.CurrentMoistureStatus}"></TextBlock>
-        <Image Source="{Binding Tamagotchi.CurrentMoodImage, UpdateSourceTrigger=PropertyChanged}" Stretch="Uniform"></Image>
-    </StackPanel>
+    <Window.Resources>
+        <SolidColorBrush x:Key="HintergrundWand" Color="#cda07f"></SolidColorBrush>
+        <SolidColorBrush x:Key="Boden" Color="#a04e1f"></SolidColorBrush>
+        <SolidColorBrush x:Key="Strich" Color="#733512"></SolidColorBrush>
+    </Window.Resources>
+    <Grid Width="320" Height="480">
+        <!-- Hintergrund Grid -->
+        <Grid RowDefinitions="70*, 1.75*, 25.75*">
+            <Border Grid.Row="0" Background="{StaticResource HintergrundWand}"/>
+            <Border Grid.Row="1" Background="{StaticResource Strich}"/>
+            <Border Grid.Row="2" Background="{StaticResource Boden}"/>
+        </Grid>
+
+        <!-- Pflanze oben drauf -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> 
+                <RowDefinition Height="Auto"/>           
+            </Grid.RowDefinitions>
+
+            <Border Background="Blue" Grid.Row="0"></Border>
+            <Border Background="Red" Grid.Row="1"></Border>
+            <!-- Border oben -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource Boden}" 
+                    BorderBrush="{StaticResource Strich}"
+                    BorderThickness="9"
+                    CornerRadius="1"
+                    Padding="1"
+                    HorizontalAlignment="Center"
+                    Margin="0,25,0,0"
+                    MinWidth="175">
+                <TextBlock Text="Bob B."
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="20"/>
+            </Border>
+            
+            <!-- Image -->
+            <Image Grid.Row="1"
+                   Source="../Assets/pflanzi.png"
+                   HorizontalAlignment="Center"
+                   Stretch="Uniform"
+                   Margin="0,0,0,0"/>
+        </Grid>
+
+            <!--<Image Source="{Binding Tamagotchi.CurrentMoodImage}" Stretch="Uniform"></Image>-->
+      
+        
+    </Grid>
   
 </Window>

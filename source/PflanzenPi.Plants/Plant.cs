@@ -30,6 +30,7 @@ public class Plant
         }
         moistureSensor.OnDataChanged += UpdateMoisture;
     }
+    
 
     /// <summary>
     /// Calls for interpretation of moisture status when moisture has changed. Emits moisture status changed event when moisture status has changed.

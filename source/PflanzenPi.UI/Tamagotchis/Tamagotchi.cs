@@ -33,7 +33,8 @@ public partial class Tamagotchi : ObservableObject
         _plant = plant;
         _moodInterpreter = moodInterpreter;
         _personality = personality;
-        _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
+        OnMoistureStatusChanged(MoistureStatus.Satisfied);
+        //_plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
     }
 
     /// <summary>
