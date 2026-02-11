@@ -9,6 +9,7 @@
         x:Class="PflanzenPi.UI.MainWindow"
         Title="PflanzenPi.UI">
     <Window.Resources>
+        <FontFamily x:Key="NameFont">avares://PflanzenPI.Ui/Styles/ari_w9500#Ari-W9500 Bold</FontFamily>
         <SolidColorBrush x:Key="HintergrundWand" Color="#cda07f"></SolidColorBrush>
         <SolidColorBrush x:Key="Boden" Color="#a04e1f"></SolidColorBrush>
         <SolidColorBrush x:Key="Strich" Color="#733512"></SolidColorBrush>
@@ -22,36 +23,49 @@
         </Grid>
 
         <!-- Pflanze oben drauf -->
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Width="320" Height="480" RowSpacing="80" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/> 
                 <RowDefinition Height="Auto"/>           
             </Grid.RowDefinitions>
-
-            <Border Background="Blue" Grid.Row="0"></Border>
-            <Border Background="Red" Grid.Row="1"></Border>
+            
             <!-- Border oben -->
             <Border Grid.Row="0"
                     Background="{StaticResource Boden}" 
                     BorderBrush="{StaticResource Strich}"
                     BorderThickness="9"
                     CornerRadius="1"
-                    Padding="1"
+                    Padding="0,3,0,0"
                     HorizontalAlignment="Center"
                     Margin="0,25,0,0"
                     MinWidth="175">
                 <TextBlock Text="Bob B."
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           FontWeight="Bold"
+                           FontFamily="{StaticResource NameFont}"
                            FontSize="20"/>
             </Border>
+            
+            <ItemsControl Grid.Row="0" ItemsSource="{Binding Tamagotchi.CurrentMoistureImages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding}" Width="30" Height="30"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             
             <!-- Image -->
             <Image Grid.Row="1"
                    Source="../Assets/pflanzi.png"
                    HorizontalAlignment="Center"
-                   Stretch="Uniform"
+                   VerticalAlignment="Center"
+                   Stretch="None"
                    Margin="0,0,0,0"/>
         </Grid>
 
