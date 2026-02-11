@@ -15,14 +15,18 @@ public static class ServiceCollectionExtensions
 {
     public static void AddCommonServices(this IServiceCollection collection)
     {
+        // Sensor
         ISensor<Moisture> sensor = new MockMoistureSensor();
         collection.AddSingleton<ISensor<Moisture>>(sensor);
+        // Sensor-Service
         SensorService sensorService = new SensorService();
         sensorService.Register(sensor);
         collection.AddSingleton<SensorService>(sensorService);
-        collection.AddSingleton<IMoistureBehaviour, StandardPlant>();
+        // Moisture Behaviour, Mood und Personality
+        collection.AddSingleton<IMoistureBehaviour, MediumMoisture>();
         collection.AddSingleton<IMoodInterpreter, DefaultMoodInterpreter>();
         collection.AddSingleton<IPersonality, NeutralPersonality>();
+        
         collection.AddSingleton<Plant>();
         collection.AddSingleton<Tamagotchi>();
         collection.AddSingleton<MainViewModel>();

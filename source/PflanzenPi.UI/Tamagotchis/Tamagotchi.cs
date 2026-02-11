@@ -8,6 +8,9 @@ using PflanzenPi.UI.Tamagotchis.Personalities;
 
 namespace PflanzenPi.UI.Tamagotchis;
 
+/// <summary>
+/// Observable model for the Tamagotchi
+/// </summary>
 public partial class Tamagotchi : ObservableObject
 {
     [ObservableProperty] private MoistureStatus currentMoistureStatus;
@@ -19,6 +22,12 @@ public partial class Tamagotchi : ObservableObject
 
     private readonly Plant _plant;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="plant">Plant-model</param>
+    /// <param name="moodInterpreter">Mood interpreter</param>
+    /// <param name="personality">personality</param>
     public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality)
     {
         _plant = plant;
@@ -27,6 +36,10 @@ public partial class Tamagotchi : ObservableObject
         _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
     }
 
+    /// <summary>
+    /// Calls for interpretation of new moisture statuses
+    /// </summary>
+    /// <param name="status">new moisture status</param>
     private void OnMoistureStatusChanged(MoistureStatus status)
     {
         CurrentMoistureStatus = status;

@@ -5,8 +5,12 @@ using static PflanzenPi.UI.Tamagotchis.Moods.Mood;
 
 namespace PflanzenPi.UI.Tamagotchis.Moods;
 
+/// <summary>
+/// Default mood interpreter
+/// </summary>
 public class DefaultMoodInterpreter : IMoodInterpreter
 {
+    /// <inheritdoc/>
     public Mood Interpret(MoistureStatus moisture)
     {
         return moisture switch
