@@ -8,4 +8,10 @@ public abstract class SensorData<T>
     {
         Data = data;
     }
+
+    public static implicit operator T(SensorData<T> sensorData)
+    {
+        return sensorData.Data;
+    }
+    
 }

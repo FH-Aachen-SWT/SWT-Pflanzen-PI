@@ -7,4 +7,8 @@
     <RootNamespace>PflanzenPi.Plants</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
+  </ItemGroup>
+
 </Project>

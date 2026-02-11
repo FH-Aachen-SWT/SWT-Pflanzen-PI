@@ -22,7 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="View\" />
+    <Folder Include="Assets\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,5 +36,12 @@
   <ItemGroup>
     <ProjectReference Include="..\PflanzenPi.Plants\PflanzenPi.Plants.csproj" />
     <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\MainWindow.axaml.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
