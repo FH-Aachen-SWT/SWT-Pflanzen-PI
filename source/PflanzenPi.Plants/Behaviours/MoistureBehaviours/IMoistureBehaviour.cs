@@ -1,6 +1,6 @@
 ﻿using PflanzenPi.Sensor;
 
-namespace PflanzenPi.Plants.Behaviours;
+namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 
 /// <summary>
 /// Interface for interpreting moisture levels to a moisture status depending on plant-type

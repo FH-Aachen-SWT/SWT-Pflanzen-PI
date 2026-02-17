@@ -17,13 +17,13 @@ public class BrightnessImagesProvider : IBrightnessImagesProvider
     /// </summary>
     /// <param name="status"></param>
     /// <returns></returns>
-    public List<string> ProvideImages(BrightnesStatus status)
+    public List<string> ProvideImages(BrightnessStatus status)
     {
         const string greySun = "greySun.png";
         const string sun = "sun.png";
         const string redSun = "redSun.png";
 
-        if (status is BrightnesStatus.High)
+        if (status is BrightnessStatus.High)
         {
             return Enumerable.Repeat(redSun, 3).ToList();
         }

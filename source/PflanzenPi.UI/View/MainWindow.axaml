@@ -42,7 +42,7 @@
             </ItemsControl>
         </Grid>
         
-        <!-- Popup -->
+        <!-- Popup for Moisture Behaviours -->
         <Popup x:Name="MoistureBehaviourPopup"
                PlacementTarget="{Binding #MoistureImages}"
                Placement="Right"
@@ -59,7 +59,7 @@
         </Popup>
         
         <!-- Brightness Images -->
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,60,0,0">
+        <Grid x:Name="BrightnessImages" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,60,0,0" PointerPressed="BrightnessImages_OnPointerPressed">
             <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentBrightnessImages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -74,6 +74,23 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
+        
+        <!-- Popup for brightness behaviours-->
+        <Popup x:Name="BrightnessBehavioursPopup"
+               PlacementTarget="{Binding #BrightnessImages}"
+               Placement="Left"
+        >
+            <Border Background="White"
+                    Padding="10"
+                    CornerRadius="8">
+
+                <ComboBox Width="150"
+                          ItemsSource="{Binding AllBrightnessTypes}"
+                          SelectedItem="{Binding Tamagotchi.CurrentBrightnessType}"/>
+
+            </Border>
+        </Popup>
+
         
         <!-- Name und Pflanzi-->
         <Grid Width="320" Height="480" RowSpacing="80" HorizontalAlignment="Center" VerticalAlignment="Center">

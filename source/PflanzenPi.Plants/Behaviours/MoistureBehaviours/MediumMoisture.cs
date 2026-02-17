@@ -1,30 +1,31 @@
 ﻿using PflanzenPi.Sensor;
 
-namespace PflanzenPi.Plants.Behaviours;
+namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 
 /// <summary>
-/// Plants that need a moisture level between 15% and 25%
+/// Plants that need a moisture level between 35% and 45%
 /// </summary>
-public class LittleMoisture : IMoistureBehaviour
+public class MediumMoisture : IMoistureBehaviour
 {
+    
     /// <inheritdoc/>
     public MoistureStatus Interpret(Moisture moisture)
     {
-        if (moisture < 10)
+        if (moisture < 30)
         {
             return MoistureStatus.VeryDry;
         }
 
-        if (moisture < 15)
+        if (moisture < 35)
         {
             return MoistureStatus.Dry;
         }
 
-        if (moisture < 25)
+        if (moisture < 45)
         {
             return MoistureStatus.Satisfied;
         }
 
-        return moisture < 30 ? MoistureStatus.Wet : MoistureStatus.VeryWet;
+        return moisture < 50 ? MoistureStatus.Wet : MoistureStatus.VeryWet;
     }
 }

@@ -20,9 +20,11 @@ public partial class Tamagotchi : ObservableObject
     
     [ObservableProperty] private PlantType currentPlantType;
     
+    [ObservableProperty] private BrightnessType currentBrightnessType;
+    
     [ObservableProperty] private MoistureStatus currentMoistureStatus;
     
-    [ObservableProperty] private BrightnesStatus currentBrightnessStatus;
+    [ObservableProperty] private BrightnessStatus currentBrightnessStatus;
     
     [ObservableProperty] private ObservableCollection<Bitmap> currentMoistureImages = new();
     
@@ -53,26 +55,40 @@ public partial class Tamagotchi : ObservableObject
         _brightnessImagesProvider  = brightnessImagesProvider;
         CurrentPlantType = PlantType.MediumWater;
         OnMoistureStatusChanged(MoistureStatus.Satisfied);
-        CurrentBrightnessStatus = BrightnesStatus.Satisfied;
-        OnBrightnessStatusChanged(CurrentBrightnessStatus);
+        OnBrightnessStatusChanged(BrightnessStatus.Satisfied);
         _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
+        _plant.OnBrightnessStatusChanged += OnBrightnessStatusChanged;
     }
 
     /// <summary>
-    /// Change behaviour when plantType changes in the UI
+    /// Change moisture behaviour when plantType changes in the UI
     /// </summary>
     /// <param name="plantType"></param>
     partial void OnCurrentPlantTypeChanged(PlantType plantType)
     {
-        _plant.ChangeBehaviour(plantType);
+        _plant.ChangeMoistureBehaviour(plantType);
     }
 
-    private void OnBrightnessStatusChanged(BrightnesStatus brightnessStatus)
+    
+    /// <summary>
+    /// Change brightness behaviour when brightnessType changes in the UI
+    /// </summary>
+    /// <param name="brightnessType"></param>
+    partial void OnCurrentBrightnessTypeChanged(BrightnessType brightnessType)
+    {
+        _plant.ChangeBrightnessBehaviour(brightnessType);
+    }
+
+    /// <summary>
+    /// Calls for interpretation of new brightness statuses
+    /// </summary>
+    /// <param name="brightnessStatus"></param>
+    private void OnBrightnessStatusChanged(BrightnessStatus brightnessStatus)
     {
         Dispatcher.UIThread.Post(() =>
         {
             var brightnessImages = _brightnessImagesProvider.ProvideImages(brightnessStatus);
-            CurrentMoistureImages.Clear();
+            CurrentBrightnessImages.Clear();
             foreach (var image in brightnessImages)
             {
                 var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");

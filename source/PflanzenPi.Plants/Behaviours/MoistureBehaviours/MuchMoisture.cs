@@ -1,6 +1,6 @@
 ﻿using PflanzenPi.Sensor;
 
-namespace PflanzenPi.Plants.Behaviours;
+namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 
 /// <summary>
 /// Plants that need a moisture level between 55% and 65%

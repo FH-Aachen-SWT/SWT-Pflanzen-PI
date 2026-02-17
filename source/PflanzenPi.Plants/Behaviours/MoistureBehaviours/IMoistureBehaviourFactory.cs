@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Plants.Behaviours;
+﻿namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 
 /// <summary>
 /// Factory for moisture behaviours 
