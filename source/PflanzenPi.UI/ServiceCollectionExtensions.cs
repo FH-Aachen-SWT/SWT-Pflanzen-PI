@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using PflanzenPi.Plants;
@@ -17,6 +18,7 @@ public static class ServiceCollectionExtensions
     {
         // Sensor
         ISensor<Moisture> sensor = new MockMoistureSensor();
+        // ISensor<Moisture> sensor = new MoistureSensor(TimeSpan.FromSeconds(1));
         collection.AddSingleton<ISensor<Moisture>>(sensor);
         // Sensor-Service
         SensorService sensorService = new SensorService();
