@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using PflanzenPi.Plants;
@@ -7,6 +8,7 @@ using PflanzenPi.Sensor.Mocks;
 using PflanzenPi.UI.Tamagotchis;
 using PflanzenPi.UI.Tamagotchis.Moods;
 using PflanzenPi.UI.Tamagotchis.Personalities;
+using PflanzenPi.UI.Tamagotchis.States;
 using PflanzenPi.UI.Viewmodel;
 
 namespace PflanzenPi.UI;
@@ -17,7 +19,9 @@ public static class ServiceCollectionExtensions
     {
         // Sensor
         ISensor<Moisture> sensor = new MockMoistureSensorSine(40);
+        // ISensor<Moisture> sensor = new MoistureSensor(TimeSpan.FromSeconds(1));
         collection.AddSingleton<ISensor<Moisture>>(sensor);
+        collection.AddSingleton<IMoistureImagesProvider, MoistureImagesProvider>();
         // Sensor-Service
         SensorService sensorService = new SensorService();
         sensorService.Register(sensor);

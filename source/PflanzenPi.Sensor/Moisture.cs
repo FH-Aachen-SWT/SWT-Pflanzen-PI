@@ -12,9 +12,9 @@ public class Moisture : SensorData<float>
     /// <exception cref="ArgumentOutOfRangeException">Argument out of range exception if negative</exception>
     public Moisture(float data) : base(data)
     {
-        if (data < 0 || data > 1000)
+        if (data < 0 || data > 100.0f)
         {
-            throw new ArgumentOutOfRangeException("Keinen gültigen Wert von der PI gelesen");
+            throw new ArgumentOutOfRangeException(nameof(data), "Keinen gültigen Wert von der PI gelesen");
         }
     }
 }

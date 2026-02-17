@@ -6,6 +6,7 @@ namespace PflanzenPi.UI.Viewmodel;
 
 public partial class MainViewModel : ObservableObject
 {
+    
     [ObservableProperty]
     private Image currentImage;
     
