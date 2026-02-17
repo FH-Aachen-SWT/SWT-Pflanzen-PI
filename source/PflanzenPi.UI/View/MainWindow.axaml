@@ -2,12 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:plants="clr-namespace:PflanzenPi;assembly=PflanzenPi.Plants"
         xmlns:vm="clr-namespace:PflanzenPi.UI.Viewmodel"
         x:DataType="vm:MainViewModel"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
         Height="480" Width="320"  
-        x:Class="PflanzenPi.UI.MainWindow"
-        Title="PflanzenPi.UI">
+        MaxHeight="480" MaxWidth="320"
+        x:Class="PflanzenPi.UI.View.MainWindow"
+        Title="PflanzenPi">
     <Window.Resources>
         <FontFamily x:Key="NameFont">avares://PflanzenPI.Ui/Styles/ari_w9500#Ari-W9500 Bold</FontFamily>
         <SolidColorBrush x:Key="HintergrundWand" Color="#cda07f"></SolidColorBrush>
@@ -21,8 +23,58 @@
             <Border Grid.Row="1" Background="{StaticResource Strich}"/>
             <Border Grid.Row="2" Background="{StaticResource Boden}"/>
         </Grid>
+        
+        <!-- Moisture Images -->
+        <Grid x:Name="MoistureImages" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0,60,0,0" PointerPressed="MoistureImages_OnPointerPressed">
+            <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentMoistureImages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-        <!-- Pflanze oben drauf -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Margin="1" Source="{Binding}" Width="30" Height="30"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        
+        <!-- Popup -->
+        <Popup x:Name="MoistureBehaviourPopup"
+               PlacementTarget="{Binding #MoistureImages}"
+               Placement="Right"
+        >
+            <Border Background="White"
+                    Padding="10"
+                    CornerRadius="8">
+
+                <ComboBox Width="150"
+                          ItemsSource="{Binding AllPlantTypes}"
+                          SelectedItem="{Binding Tamagotchi.CurrentPlantType}"/>
+
+            </Border>
+        </Popup>
+        
+        <!-- Brightness Images -->
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,60,0,0">
+            <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentBrightnessImages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Margin="1" Source="{Binding}" Width="30" Height="30"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        
+        <!-- Name und Pflanzi-->
         <Grid Width="320" Height="480" RowSpacing="80" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/> 
@@ -39,39 +91,26 @@
                     HorizontalAlignment="Center"
                     Margin="0,25,0,0"
                     MinWidth="175">
-                <TextBlock Text="Bob B."
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           FontFamily="{StaticResource NameFont}"
-                           FontSize="20"/>
+                <TextBox Text="{Binding Tamagotchi.Name}"
+                         Background="Transparent"
+                         BorderBrush="Transparent"
+                         BorderThickness="0"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center"
+                         MaxLength="15"
+                         FontFamily="{StaticResource NameFont}"
+                         FontSize="20"/>
             </Border>
             
-            <ItemsControl Grid.Row="0" ItemsSource="{Binding Tamagotchi.CurrentMoistureImages}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Image Source="{Binding}" Width="30" Height="30"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            
             <!-- Image -->
-            <Image Grid.Row="1"
+            <Image x:Name="PlantImage" 
+                Grid.Row="1"
                    Source="{Binding Tamagotchi.CurrentMoodImage}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Stretch="None"
                    Margin="0,0,0,0"/>
         </Grid>
-
-            <!--<Image Source="{Binding Tamagotchi.CurrentMoodImage}" Stretch="Uniform"></Image>-->
-      
-        
     </Grid>
   
 </Window>

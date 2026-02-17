@@ -15,9 +15,9 @@ public class NeutralPersonality : IPersonality
         return mood switch
         {
             Happy => "satisfied.png",
-            Neutral => string.Empty,
-            Sad => string.Empty,
-            Angry => string.Empty,
+            Neutral => "drySad.png",
+            Sad =>  "wetNeutral.png",
+            Angry => "dryWetAngry.png",
             _ => throw new ArgumentOutOfRangeException(nameof(mood), mood, null)
         };
     }

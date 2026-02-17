@@ -29,7 +29,7 @@ public class MoistureImagesProvider : IMoistureImagesProvider
             return Enumerable.Repeat(redDrop, 3).ToList();
         }
 
-        int drops = Math.Max((int)status - 1, 0);
+        int drops = Math.Max((int)status, 0);
         int greyDrops = Math.Max(3 - drops, 0);
 
         var allDrops = Enumerable.Repeat(drop, drops)

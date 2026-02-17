@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using PflanzenPi.UI.View;
 using PflanzenPi.UI.Viewmodel;
 
 namespace PflanzenPi.UI;

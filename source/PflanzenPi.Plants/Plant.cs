@@ -1,3 +1,4 @@
+using PflanzenPi.Plants.Behaviours;
 using PflanzenPi.Sensor;
 
 namespace PflanzenPi.Plants;
@@ -11,24 +12,41 @@ public class Plant
     
     public MoistureStatusChangedEvent? OnMoistureStatusChanged;
     
-    private readonly IMoistureBehaviour _moistureBehaviour;
+    private readonly IMoistureBehaviourFactory _moistureBehaviourFactory;
+    
+    private readonly ISensor<Moisture>  _moistureSensor;
+    
+    private IMoistureBehaviour currentMoistureBehaviour;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="sensorService">Sensor service</param>
-    /// <param name="moistureBehaviour">Moisture behaviour of plant</param>
+    /// <param name="moistureBehaviourFactory">Moisture behaviour factory to create a behaviour for the PlantType</param>
     /// <exception cref="ArgumentNullException">ArgumentNullException if moisture sensor is null</exception>
-    public Plant(SensorService sensorService, IMoistureBehaviour moistureBehaviour)
+    public Plant(SensorService sensorService, IMoistureBehaviourFactory moistureBehaviourFactory)
     {
         _sensorService = sensorService;
-        _moistureBehaviour = moistureBehaviour;
+        _moistureBehaviourFactory = moistureBehaviourFactory;
+        currentMoistureBehaviour = moistureBehaviourFactory.Create(PlantType.MediumWater);
         ISensor<Moisture>? moistureSensor = _sensorService.Get<Moisture>();
-        if (moistureSensor is null)
-        {
-            throw new ArgumentNullException(nameof(moistureSensor));
-        }
+        _moistureSensor = moistureSensor ?? throw new ArgumentNullException(nameof(moistureSensor));
         moistureSensor.OnDataChanged += UpdateMoisture;
+    }
+
+    /// <summary>
+    /// Change the behaviour of the Plant with a certain PlantType
+    /// </summary>
+    /// <param name="plantType"></param>
+    public void ChangeBehaviour(PlantType plantType)
+    {
+        currentMoistureBehaviour = _moistureBehaviourFactory.Create(plantType);
+        if (_moistureSensor.Current is not null)
+        {
+            //Force Update when switching behaviour
+            UpdateMoisture(null, _moistureSensor.Current);
+        }
+        Console.WriteLine("BEHAVIOUR CHANGED: " + nameof(currentMoistureBehaviour));
     }
     
 
@@ -43,9 +61,9 @@ public class Plant
         MoistureStatus nextStatus;
         if (prevMoisture is not null && prevMoisture != nextMoisture)
         {
-            prevStatus = _moistureBehaviour.Interpret(prevMoisture);
+            prevStatus = currentMoistureBehaviour.Interpret(prevMoisture);
         }
-        nextStatus = _moistureBehaviour.Interpret(nextMoisture);
+        nextStatus = currentMoistureBehaviour.Interpret(nextMoisture);
         if (prevStatus is null || (prevMoisture != null && prevMoisture == 0) || prevStatus != nextStatus)
         {
             OnMoistureStatusChanged?.Invoke(nextStatus);

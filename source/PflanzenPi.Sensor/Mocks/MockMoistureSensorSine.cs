@@ -17,10 +17,10 @@ public class MockMoistureSensorSine : Sensor<Moisture>
     /// Constructor
     /// </summary>
     /// <param name="perfectMoistureLevel">Middle moisture level wanted for simulation</param>
-    public MockMoistureSensorSine(int perfectMoistureLevel)
+    public MockMoistureSensorSine(int perfectMoistureLevel, TimeSpan interval)
     {
         _middle = (float) perfectMoistureLevel / 100;
-        _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1));
+        _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), interval);
     }
     
     /// <summary>
