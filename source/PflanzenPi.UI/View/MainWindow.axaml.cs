@@ -19,4 +19,17 @@ public partial class MainWindow : Window
     {
         BrightnessBehavioursPopup.IsOpen = !BrightnessBehavioursPopup.IsOpen;
     }
+
+    private void RootGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        RootGrid.Focus();
+    }
+
+    private void NameTextBox_OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Escape)
+        {
+            RootGrid.Focus();
+        }
+    }
 }
