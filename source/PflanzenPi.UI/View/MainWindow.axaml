@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:anim="https://github.com/whistyun/AnimatedImage.Avalonia"
-        xmlns:plants="clr-namespace:PflanzenPi;assembly=PflanzenPi.Plants"
+
         xmlns:vm="clr-namespace:PflanzenPi.UI.Viewmodel"
         x:DataType="vm:MainViewModel"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
@@ -17,7 +17,10 @@
         <SolidColorBrush x:Key="Boden" Color="#a04e1f"></SolidColorBrush>
         <SolidColorBrush x:Key="Strich" Color="#733512"></SolidColorBrush>
     </Window.Resources>
-    <Grid Width="320" Height="480">
+    <Grid Width="320" Height="480" x:Name="RootGrid"
+          Focusable="True"
+          Background="Transparent"
+          PointerPressed="RootGrid_OnPointerPressed">
         <!-- Hintergrund Grid -->
         <Grid RowDefinitions="70*, 1.75*, 25.75*">
             <Border Grid.Row="0" Background="{StaticResource HintergrundWand}"/>
@@ -109,10 +112,11 @@
                     HorizontalAlignment="Center"
                     Margin="0,25,0,0"
                     MinWidth="175">
-                <TextBox Text="{Binding Tamagotchi.Name}"
+                <TextBox x:Name="NameTextBox" Text="{Binding Tamagotchi.Name}"
                          Background="Transparent"
                          BorderBrush="Transparent"
                          BorderThickness="0"
+                         KeyDown="NameTextBox_OnKeyDown"
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          MaxLength="15"
