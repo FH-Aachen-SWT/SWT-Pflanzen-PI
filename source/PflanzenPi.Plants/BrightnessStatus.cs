@@ -1,6 +1,6 @@
 ﻿namespace PflanzenPi.Plants;
 
-public enum BrightnesStatus
+public enum BrightnessStatus
 {
     VeryLow,
     Low,

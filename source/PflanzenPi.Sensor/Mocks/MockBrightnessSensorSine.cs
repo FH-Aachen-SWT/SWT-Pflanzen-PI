@@ -1,0 +1,46 @@
+﻿namespace PflanzenPi.Sensor.Mocks;
+
+public class MockBrightnessSensorSine : Sensor<Brightness>
+{
+    private readonly Timer _timer;
+
+    private float pos;
+
+    private readonly float _increment = 0.25f;
+
+    private readonly float _middle;
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="perfectBrightnessLevel">Middle brightness level wanted for simulation</param>
+    public MockBrightnessSensorSine(int perfectBrightnessLevel, TimeSpan interval)
+    {
+        _middle = (float) perfectBrightnessLevel / 100;
+        _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), interval);
+    }
+    
+    /// <summary>
+    /// Simulate read with sine function
+    /// </summary>
+    /// <param name="_"></param>
+    private void SimuliereLesen(object? _)
+    {
+        getNextPos();
+        var moisture = (float) (0.12*Math.Sin(pos) + _middle) * 100;
+        Publish(new Brightness(moisture));
+        Console.WriteLine($"MOCK READ BRIGHTNESS:  {moisture}");
+    }
+
+    /// <summary>
+    /// Next position to give sine function
+    /// </summary>
+    private void getNextPos()
+    {
+        pos += _increment;
+        if (pos < 0)
+        {
+            pos = 0;
+        }
+    }
+}

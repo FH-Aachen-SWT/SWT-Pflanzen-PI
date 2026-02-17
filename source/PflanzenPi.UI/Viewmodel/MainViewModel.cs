@@ -13,6 +13,9 @@ public partial class MainViewModel : ObservableObject
     
     [ObservableProperty]
     private PlantType[] allPlantTypes = Enum.GetValues<PlantType>();
+    
+    [ObservableProperty]
+    private BrightnessType[] allBrightnessTypes = Enum.GetValues<BrightnessType>();
 
     public MainViewModel(Tamagotchi tamagotchi)
     {

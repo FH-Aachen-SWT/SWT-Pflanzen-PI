@@ -14,4 +14,9 @@ public partial class MainWindow : Window
     {
         MoistureBehaviourPopup.IsOpen = !MoistureBehaviourPopup.IsOpen;
     }
+
+    private void BrightnessImages_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        BrightnessBehavioursPopup.IsOpen = !BrightnessBehavioursPopup.IsOpen;
+    }
 }

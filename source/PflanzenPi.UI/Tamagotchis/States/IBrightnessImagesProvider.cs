@@ -5,5 +5,5 @@ namespace PflanzenPi.UI.Tamagotchis.States;
 
 public interface IBrightnessImagesProvider
 {
-    List<string> ProvideImages(BrightnesStatus status);
+    List<string> ProvideImages(BrightnessStatus status);
 }
