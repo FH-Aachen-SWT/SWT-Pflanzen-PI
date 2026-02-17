@@ -7,6 +7,7 @@ namespace PflanzenPi.Plants.Behaviours;
 /// </summary>
 public class MediumMoisture : IMoistureBehaviour
 {
+    
     /// <inheritdoc/>
     public MoistureStatus Interpret(Moisture moisture)
     {

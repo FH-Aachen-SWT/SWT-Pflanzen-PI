@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
@@ -17,17 +16,25 @@ namespace PflanzenPi.UI.Tamagotchis;
 /// </summary>
 public partial class Tamagotchi : ObservableObject
 {
+    [ObservableProperty] private string name;
+    
+    [ObservableProperty] private PlantType currentPlantType;
+    
     [ObservableProperty] private MoistureStatus currentMoistureStatus;
     
+    [ObservableProperty] private BrightnesStatus currentBrightnessStatus;
+    
     [ObservableProperty] private ObservableCollection<Bitmap> currentMoistureImages = new();
+    
+    [ObservableProperty] private ObservableCollection<Bitmap> currentBrightnessImages = new();
     
     [ObservableProperty] private Bitmap? currentMoodImage;
     
     private readonly IMoodInterpreter _moodInterpreter;
     private readonly IPersonality _personality;
     private readonly IMoistureImagesProvider _moistureImagesProvider;
-
     private readonly Plant _plant;
+    private readonly IBrightnessImagesProvider _brightnessImagesProvider;
 
     /// <summary>
     /// Constructor
@@ -36,14 +43,42 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="moodInterpreter">Mood interpreter</param>
     /// <param name="personality">personality</param>
     /// <param name="moistureImagesProvider">moistureImagesProvider</param>
-    public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality, IMoistureImagesProvider moistureImagesProvider)
+    public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality, IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider)
     {
+        Name = "Bob.B";
         _plant = plant;
         _moodInterpreter = moodInterpreter;
         _personality = personality;
         _moistureImagesProvider = moistureImagesProvider;
+        _brightnessImagesProvider  = brightnessImagesProvider;
+        CurrentPlantType = PlantType.MediumWater;
         OnMoistureStatusChanged(MoistureStatus.Satisfied);
+        CurrentBrightnessStatus = BrightnesStatus.Satisfied;
+        OnBrightnessStatusChanged(CurrentBrightnessStatus);
         _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
+    }
+
+    /// <summary>
+    /// Change behaviour when plantType changes in the UI
+    /// </summary>
+    /// <param name="plantType"></param>
+    partial void OnCurrentPlantTypeChanged(PlantType plantType)
+    {
+        _plant.ChangeBehaviour(plantType);
+    }
+
+    private void OnBrightnessStatusChanged(BrightnesStatus brightnessStatus)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var brightnessImages = _brightnessImagesProvider.ProvideImages(brightnessStatus);
+            CurrentMoistureImages.Clear();
+            foreach (var image in brightnessImages)
+            {
+                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
+                CurrentBrightnessImages.Add(new Bitmap(AssetLoader.Open(uri)));
+            }
+        });
     }
 
     /// <summary>
@@ -72,7 +107,7 @@ public partial class Tamagotchi : ObservableObject
             CurrentMoistureImages.Clear();
             foreach (var image in moistureImages)
             {
-                var uri = new Uri($"avares://PflanzenPi.UI/Assets/{image}");
+                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
                 CurrentMoistureImages.Add(new Bitmap(AssetLoader.Open(uri)));
             }
         });

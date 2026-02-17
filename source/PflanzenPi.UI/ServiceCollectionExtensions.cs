@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     public static void AddCommonServices(this IServiceCollection collection)
     {
         // Sensor
-        ISensor<Moisture> sensor = new MockMoistureSensorSine(40);
+        ISensor<Moisture> sensor = new MockMoistureSensorSine(40, TimeSpan.FromMilliseconds(1000));
         // ISensor<Moisture> sensor = new MoistureSensor(TimeSpan.FromSeconds(1));
         collection.AddSingleton<ISensor<Moisture>>(sensor);
         collection.AddSingleton<IMoistureImagesProvider, MoistureImagesProvider>();
@@ -26,8 +26,9 @@ public static class ServiceCollectionExtensions
         SensorService sensorService = new SensorService();
         sensorService.Register(sensor);
         collection.AddSingleton<SensorService>(sensorService);
-        // Moisture Behaviour, Mood und Personality
-        collection.AddSingleton<IMoistureBehaviour, MediumMoisture>();
+        // Behaviours, Mood und Personality
+        collection.AddSingleton<IMoistureBehaviourFactory, MoistureBehaviourFactory>();
+        collection.AddSingleton<IBrightnessImagesProvider, BrightnessImagesProvider>();
         collection.AddSingleton<IMoodInterpreter, DefaultMoodInterpreter>();
         collection.AddSingleton<IPersonality, NeutralPersonality>();
         
