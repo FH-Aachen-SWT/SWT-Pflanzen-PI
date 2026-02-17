@@ -28,7 +28,7 @@ public partial class Tamagotchi : ObservableObject
     
     [ObservableProperty] private ObservableCollection<Bitmap> currentBrightnessImages = new();
     
-    [ObservableProperty] private Bitmap? currentMoodImage;
+    [ObservableProperty] private string? currentMoodImage;
     
     private readonly IMoodInterpreter _moodInterpreter;
     private readonly IPersonality _personality;
@@ -95,8 +95,7 @@ public partial class Tamagotchi : ObservableObject
         {
             if (!string.IsNullOrEmpty(moodImageName))
             {
-                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{moodImageName}");
-                CurrentMoodImage = new Bitmap(AssetLoader.Open(uri));
+                CurrentMoodImage = $"{AssetConstants.ASSET_BASE_PATH}{moodImageName}";
                 Console.WriteLine($"Loaded Image: {moodImageName}");
             }
             else
