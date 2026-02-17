@@ -14,7 +14,7 @@ public class NeutralPersonality : IPersonality
     {
         return mood switch
         {
-            Happy => "pflanzi.png",
+            Happy => "satisfied.png",
             Neutral => string.Empty,
             Sad => string.Empty,
             Angry => string.Empty,
