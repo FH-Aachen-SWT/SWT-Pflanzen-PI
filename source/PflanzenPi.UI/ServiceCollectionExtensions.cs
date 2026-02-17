@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
     public static void AddCommonServices(this IServiceCollection collection)
     {
         // Sensor
-        ISensor<Moisture> sensor = new MockMoistureSensor();
+        ISensor<Moisture> sensor = new MockMoistureSensorSine(40);
         collection.AddSingleton<ISensor<Moisture>>(sensor);
         // Sensor-Service
         SensorService sensorService = new SensorService();
