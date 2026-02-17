@@ -55,7 +55,7 @@ public class Plant
     /// </summary>
     /// <param name="prevMoisture">Previous moisture</param>
     /// <param name="nextMoisture">Next / Current moisture</param>
-    protected void UpdateMoisture(Moisture? prevMoisture, Moisture nextMoisture)
+    public void UpdateMoisture(Moisture? prevMoisture, Moisture nextMoisture)
     {
         MoistureStatus? prevStatus = null;
         MoistureStatus nextStatus;
