@@ -53,7 +53,7 @@ public class Plant
             //Force Update when switching behaviour
             UpdateMoisture(null, _moistureSensor.Current);
         }
-        Console.WriteLine("MOISTURE BEHAVIOUR CHANGED: " + nameof(currentMoistureBehaviour));
+        Console.WriteLine("MOISTURE BEHAVIOUR CHANGED: " + plantType);
     }
     
     /// <summary>
@@ -68,7 +68,7 @@ public class Plant
             //Force Update when switching behaviour
             UpdateBrightness(null, _brightnessSensor.Current);
         }
-        Console.WriteLine("BRIGHTNESS BEHAVIOUR CHANGED: " + nameof(currentBrightnessBehaviour));
+        Console.WriteLine("BRIGHTNESS BEHAVIOUR CHANGED: " + brightnessType);
     }
 
     /// <summary>

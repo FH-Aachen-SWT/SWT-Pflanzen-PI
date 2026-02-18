@@ -12,7 +12,7 @@ public class BrightnessImagesProvider : IBrightnessImagesProvider
     /// Wenn High => 3 Rote ausgefüllte Sonnen
     /// Wenn Medium => 3 ausgefüllte Sonnen
     /// Wenn Satisfied => 2 ausgefüllte Sonnen rest Grau
-    /// Wenn Low => 1 ausgefüllte Tropfen rest Grau
+    /// Wenn Low => 1 ausgefüllte Sonnen rest Grau
     /// Wenn VeryLow => alle Grau 
     /// </summary>
     /// <param name="status"></param>
