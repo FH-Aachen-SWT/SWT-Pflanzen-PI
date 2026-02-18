@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.UI.Tamagotchis.Moods;
 using PflanzenPi.UI.Tamagotchis.Personalities;
@@ -16,7 +19,7 @@ namespace PflanzenPi.UI.Tamagotchis;
 /// </summary>
 public partial class Tamagotchi : ObservableObject
 {
-    [ObservableProperty] private string name;
+    [ObservableProperty] private string? name;
     
     [ObservableProperty] private PlantType currentPlantType;
     
@@ -31,12 +34,18 @@ public partial class Tamagotchi : ObservableObject
     [ObservableProperty] private ObservableCollection<Bitmap> currentBrightnessImages = new();
     
     [ObservableProperty] private string? currentMoodImage;
+
+    public IAsyncRelayCommand<PlantType> PlantTypeChangedCommand => new AsyncRelayCommand<PlantType>(OnPlantTypeChanged);
+    public IAsyncRelayCommand<BrightnessType> BrightnessTypeChangedCommand => new AsyncRelayCommand<BrightnessType>(OnBrightnessTypeChanged);
+    
+    public IAsyncRelayCommand<string> NameChangedCommand => new AsyncRelayCommand<string>(OnTamagotchiNameChanged);
     
     private readonly IMoodInterpreter _moodInterpreter;
     private readonly IPersonality _personality;
     private readonly IMoistureImagesProvider _moistureImagesProvider;
     private readonly Plant _plant;
     private readonly IBrightnessImagesProvider _brightnessImagesProvider;
+    private readonly ITamagotchiRepository _tamagotchiRepository;
 
     /// <summary>
     /// Constructor
@@ -45,17 +54,23 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="moodInterpreter">Mood interpreter</param>
     /// <param name="personality">personality</param>
     /// <param name="moistureImagesProvider">moistureImagesProvider</param>
-    public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality, IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider)
+    public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality,
+        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository)
     {
-        Name = "Bob.B";
+        _tamagotchiRepository = tamagotchiRepository;
         _plant = plant;
+        Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            Name = await _tamagotchiRepository.GetCurrentTamagotchiName();
+            CurrentPlantType = await _tamagotchiRepository.GetPlantType(Name);
+            CurrentBrightnessType = await _tamagotchiRepository.GetBrightnessType(Name);
+            _plant.ChangeMoistureBehaviour(CurrentPlantType);
+            _plant.ChangeBrightnessBehaviour(CurrentBrightnessType);
+        });
         _moodInterpreter = moodInterpreter;
         _personality = personality;
         _moistureImagesProvider = moistureImagesProvider;
         _brightnessImagesProvider  = brightnessImagesProvider;
-        CurrentPlantType = PlantType.MediumWater;
-        OnMoistureStatusChanged(MoistureStatus.Satisfied);
-        OnBrightnessStatusChanged(BrightnessStatus.Satisfied);
         _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
         _plant.OnBrightnessStatusChanged += OnBrightnessStatusChanged;
     }
@@ -64,9 +79,10 @@ public partial class Tamagotchi : ObservableObject
     /// Change moisture behaviour when plantType changes in the UI
     /// </summary>
     /// <param name="plantType"></param>
-    partial void OnCurrentPlantTypeChanged(PlantType plantType)
+    private async Task OnPlantTypeChanged(PlantType plantType)
     {
         _plant.ChangeMoistureBehaviour(plantType);
+        await _tamagotchiRepository.UpdatePlantType(plantType);
     }
 
     
@@ -74,9 +90,23 @@ public partial class Tamagotchi : ObservableObject
     /// Change brightness behaviour when brightnessType changes in the UI
     /// </summary>
     /// <param name="brightnessType"></param>
-    partial void OnCurrentBrightnessTypeChanged(BrightnessType brightnessType)
+    private async Task OnBrightnessTypeChanged(BrightnessType brightnessType)
     {
         _plant.ChangeBrightnessBehaviour(brightnessType);
+        await _tamagotchiRepository.UpdateBrightnessType(brightnessType);
+    }
+
+    /// <summary>
+    /// change the name of the tamagotchi when Name changes in the UI
+    /// </summary>
+    /// <param name="tamagotchiName"></param>
+    private async Task OnTamagotchiNameChanged(string? tamagotchiName)
+    {
+        if (string.IsNullOrWhiteSpace(tamagotchiName))
+        {
+            return;
+        }
+        await _tamagotchiRepository.UpdateName(tamagotchiName);
     }
 
     /// <summary>

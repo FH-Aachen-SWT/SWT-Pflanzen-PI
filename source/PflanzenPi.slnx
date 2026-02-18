@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="PflanzenPI.Persistence\PflanzenPI.Persistence.csproj" Type="Classic C#" />
   <Project Path="PflanzenPi.Plants/PflanzenPi.Plants.csproj" />
   <Project Path="PflanzenPi.Sensor/PflanzenPi.Sensor.csproj" />
   <Project Path="PflanzenPI.Tests/PflanzenPI.Tests.csproj" />

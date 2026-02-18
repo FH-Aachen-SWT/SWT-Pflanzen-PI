@@ -54,9 +54,15 @@
                     Padding="10"
                     CornerRadius="8">
 
-                <ComboBox Width="150"
+                <ComboBox x:Name="PlantTypeComboBox" Width="150"
                           ItemsSource="{Binding AllPlantTypes}"
-                          SelectedItem="{Binding Tamagotchi.CurrentPlantType}"/>
+                          SelectedItem="{Binding Tamagotchi.CurrentPlantType}">
+                   <Interaction.Behaviors>
+                       <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #PlantTypeComboBox}">
+                           <InvokeCommandAction Command="{Binding Tamagotchi.PlantTypeChangedCommand}" CommandParameter="{Binding #PlantTypeComboBox.SelectedItem}"></InvokeCommandAction>
+                       </EventTriggerBehavior>
+                   </Interaction.Behaviors>
+                </ComboBox>
 
             </Border>
         </Popup>
@@ -87,9 +93,18 @@
                     Padding="10"
                     CornerRadius="8">
 
-                <ComboBox Width="150"
+                <ComboBox x:Name="BrightnessTypeComboBox" 
+                        Width="150"
                           ItemsSource="{Binding AllBrightnessTypes}"
-                          SelectedItem="{Binding Tamagotchi.CurrentBrightnessType}"/>
+                          SelectedItem="{Binding Tamagotchi.CurrentBrightnessType}">
+                          
+                    <Interaction.Behaviors>
+                        <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #BrightnessTypeComboBox}">
+                            <InvokeCommandAction Command="{Binding Tamagotchi.BrightnessTypeChangedCommand}" 
+                                                 CommandParameter="{Binding #BrightnessTypeComboBox.SelectedItem}"></InvokeCommandAction>
+                        </EventTriggerBehavior>
+                    </Interaction.Behaviors>
+                </ComboBox>
 
             </Border>
         </Popup>
@@ -121,7 +136,14 @@
                          HorizontalAlignment="Center"
                          MaxLength="15"
                          FontFamily="{StaticResource NameFont}"
-                         FontSize="20"/>
+                         FontSize="20">
+                    <Interaction.Behaviors>
+                        <EventTriggerBehavior EventName="LostFocus" SourceObject="{Binding #NameTextBox}">
+                            <InvokeCommandAction Command="{Binding Tamagotchi.NameChangedCommand}" 
+                                                 CommandParameter="{Binding #NameTextBox.Text}"></InvokeCommandAction>
+                        </EventTriggerBehavior>
+                    </Interaction.Behaviors>
+                </TextBox>
             </Border>
             
             <!-- Image -->
