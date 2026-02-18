@@ -9,7 +9,7 @@ public class Moisture : SensorData<float>
     /// Checks argument and converts to percent
     /// </summary>
     /// <param name="data">raw data</param>
-    /// <exception cref="ArgumentOutOfRangeException">Argument out of range exception if negative</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Argument out of range exception if not between 0 and 100</exception>
     public Moisture(float data) : base(data)
     {
         if (data < 0 || data > 100.0f)
