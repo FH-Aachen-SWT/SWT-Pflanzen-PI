@@ -35,7 +35,7 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<IBrightnessBehaviourFactory, BrightnessBehaviourFactory>();
         collection.AddSingleton<IMoistureImagesProvider, MoistureImagesProvider>();
         collection.AddSingleton<IBrightnessImagesProvider, BrightnessImagesProvider>();
-        collection.AddSingleton<IMoodInterpreter, DefaultMoodInterpreter>();
+        collection.AddSingleton<IMoodInterpreter, WeightedMoodInterpreter>();
         collection.AddSingleton<IPersonality, NeutralPersonality>();
         
         collection.AddSingleton<Plant>();

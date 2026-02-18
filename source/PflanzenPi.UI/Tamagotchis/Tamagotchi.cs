@@ -104,7 +104,7 @@ public partial class Tamagotchi : ObservableObject
     private void OnMoistureStatusChanged(MoistureStatus status)
     {
         CurrentMoistureStatus = status;
-        var currentMood = _moodInterpreter.Interpret(status);
+        var currentMood = _moodInterpreter.Interpret(status, CurrentBrightnessStatus);
         Console.WriteLine($"Updated Status:  {status}");
         var moodImageName = _personality.ProvideImage(currentMood);
         Dispatcher.UIThread.Post(() =>
