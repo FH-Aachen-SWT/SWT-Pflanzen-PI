@@ -4,6 +4,7 @@ using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
+using PflanzenPi.Plants.PredictionModel;
 using PflanzenPi.Sensor;
 using PflanzenPi.Sensor.Mocks;
 using PflanzenPi.UI.Tamagotchis;
@@ -29,12 +30,18 @@ public static class ServiceCollectionExtensions
         // ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate); //REAL SENSOR
         collection.AddSingleton<ISensor<Moisture>>(moistureSensor);
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
+        
         // Sensor-Service
         SensorService sensorService = new SensorService();
         sensorService.Register(moistureSensor);
         sensorService.Register(brightnessSensor);
         collection.AddSingleton<SensorService>(sensorService);
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
+        
+        // Prediction Service
+        IPredictionService predictionService = new PredictionService(pollingRate);
+        collection.AddSingleton<IPredictionService>(predictionService);
+        
         // Behaviours, Mood und Personality
         collection.AddSingleton<IMoistureBehaviourFactory, MoistureBehaviourFactory>();
         collection.AddSingleton<IBrightnessBehaviourFactory, BrightnessBehaviourFactory>();
