@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <AssemblyName>PflanzenPi.UI</AssemblyName>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -39,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PflanzenPi.Plants\PflanzenPi.Plants.csproj" />
     <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
   </ItemGroup>
 
