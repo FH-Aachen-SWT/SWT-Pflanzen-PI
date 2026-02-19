@@ -2,7 +2,7 @@ using PflanzenPi.Plants.Behaviours;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 using PflanzenPi.Plants.PredictionModel;
-using PflanzenPi.Sensor;
+using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.Plants;
 

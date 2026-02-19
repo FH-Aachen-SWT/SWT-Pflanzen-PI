@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Sensor.Adapter;
+﻿namespace PflanzenPi.Sensor.Sensors.Adapter;
 
 public interface II2CAdapter
 {

@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Sensor.Mocks;
+﻿namespace PflanzenPi.Sensor.Sensors.Mocks;
 
 /// <summary>
 /// Mock moisture sensor using Sine Wave

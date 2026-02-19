@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using PflanzenPi.Sensor;
+using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPI.Tests;
 

@@ -1,8 +1,8 @@
 ﻿using System.Device.I2c;
 using Iot.Device.Ads1115;
-using PflanzenPi.Sensor.Adapter;
+using PflanzenPi.Sensor.Sensors.Adapter;
 
-namespace PflanzenPi.Sensor;
+namespace PflanzenPi.Sensor.Sensors;
 
 public class BrightnessSensor : Sensor<Brightness>
 {
