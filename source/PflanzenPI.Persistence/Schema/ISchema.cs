@@ -13,7 +13,7 @@ public interface ISchema
     ///<param name="transaction"></param>
     /// <param name="connection"></param>
     /// <returns></returns>
-    Task OnMigrate(IDbConnection connection, IDbTransaction transaction, int schemaVersion);
+    Task OnMigrateAsync(IDbConnection connection, IDbTransaction transaction, int schemaVersion);
     
     /// <summary>
     /// Gets called first when downgrading to the schemaversion
@@ -26,7 +26,7 @@ public interface ISchema
     ///<param name="transaction"></param>
     /// <param name="connection"></param>
     /// <returns></returns>
-    Task OnDowngrade(IDbConnection connection, IDbTransaction transaction, int toVersion);
+    Task OnDowngradeAsync(IDbConnection connection, IDbTransaction transaction, int toVersion);
 
     /// <summary>
     /// Gets called after the OnMigrate method. Gets called only once if the schmemaVersion is new
@@ -35,5 +35,5 @@ public interface ISchema
     /// <param name="transaction"></param>
     /// <param name="schemaVersion">Starts at 0</param>
     /// <returns></returns>
-    Task OnInitialize(IDbConnection connection, IDbTransaction transaction, int schemaVersion);
+    Task OnInitializeAsync(IDbConnection connection, IDbTransaction transaction, int schemaVersion);
 }

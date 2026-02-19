@@ -24,5 +24,6 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel(Tamagotchi tamagotchi)
     {
         Tamagotchi = tamagotchi;
+        
     }
 }

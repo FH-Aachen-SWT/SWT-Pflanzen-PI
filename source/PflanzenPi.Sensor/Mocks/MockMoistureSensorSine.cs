@@ -32,7 +32,6 @@ public class MockMoistureSensorSine : Sensor<Moisture>
         getNextPos();
         var moisture = (float) (0.12*Math.Sin(pos) + _middle) * 100;
         Publish(new Moisture(moisture));
-        Console.WriteLine($"MOCK READ MOISTURE:  {moisture}");
     }
 
     /// <summary>

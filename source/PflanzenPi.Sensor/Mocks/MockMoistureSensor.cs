@@ -18,6 +18,5 @@ public class MockMoistureSensor : Sensor<Moisture>
     {
         var moisture = (float) Random.Shared.NextDouble() * 100f;
         Publish(new Moisture(moisture));
-        Console.WriteLine($"MOCK READ MOISTURE:  {moisture}");
     }
 }

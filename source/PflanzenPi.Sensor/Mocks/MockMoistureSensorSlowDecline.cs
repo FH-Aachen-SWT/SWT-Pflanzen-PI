@@ -35,6 +35,5 @@ public class MockMoistureSensorSlowDecline : Sensor<Moisture>
             steps++;
         }
         Publish(new Moisture(moisture));
-        Console.WriteLine($"MOCK READ MOISTURE:  {moisture}");
     }
 }

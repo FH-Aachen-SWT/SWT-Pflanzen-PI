@@ -1,14 +1,11 @@
-using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
-using PflanzenPI.Persistence.Database;
 using PflanzenPi.UI.View;
 using PflanzenPi.UI.Viewmodel;
+using PflanzenPI.Persistence.Database;
 
 namespace PflanzenPi.UI;
 
@@ -21,7 +18,7 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        DatabaseConnectionFactory.Version = 1;
+        DatabaseConnectionFactory.Version = 2;
         // If you use CommunityToolkit, line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT
         BindingPlugins.DataValidators.RemoveAt(0);
@@ -41,7 +38,7 @@ public partial class App : Application
                 DataContext = vm
             };
         }
-        
+
 
         base.OnFrameworkInitializationCompleted();
     }

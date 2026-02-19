@@ -10,7 +10,7 @@ namespace PflanzenPI.Persistence.Schema;
 public class SchemaVersionSchema : ISchema
 {
     
-    public async Task OnMigrate(IDbConnection connection, IDbTransaction transaction,  int schemaVersion) 
+    public async Task OnMigrateAsync(IDbConnection connection, IDbTransaction transaction,  int schemaVersion) 
     {
         await connection.ExecuteAsync(
             """
@@ -22,7 +22,7 @@ public class SchemaVersionSchema : ISchema
         transaction: transaction);
     }
 
-    public Task OnDowngrade(IDbConnection connection, IDbTransaction transaction, int toVersion)
+    public Task OnDowngradeAsync(IDbConnection connection, IDbTransaction transaction, int toVersion)
     {
         return Task.CompletedTask;
     }
@@ -34,7 +34,7 @@ public class SchemaVersionSchema : ISchema
     /// <param name="transaction"></param>
     /// <param name="schemaVersion"></param>
     /// <returns></returns>
-    public Task OnInitialize(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
+    public Task OnInitializeAsync(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
     {
         return connection.ExecuteScalarAsync("""
                                              INSERT INTO SchemaVersion(versionNr, isInitialized) 

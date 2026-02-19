@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using PflanzenPI.Persistence.Business;
 using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
@@ -19,6 +20,11 @@ public static class ServiceCollectionExtensions
 {
     public static void AddCommonServices(this IServiceCollection collection)
     {
+        //Streaks
+        collection.AddSingleton<IStreakRepository, StreakRepository>();
+        collection.AddSingleton<IStreakService, StreakService>();
+        collection.AddSingleton<IStreakBatch, StreakBatch>();
+        
         //Repository
         collection.AddSingleton<ITamagotchiRepository, TamagotchiRepository>();
         

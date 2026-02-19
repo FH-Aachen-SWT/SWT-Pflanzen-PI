@@ -7,6 +7,9 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PflanzenPI.Persistence.Business;
+using PflanzenPI.Persistence.Business.Errors;
+using PflanzenPI.Persistence.Database;
 using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Types;
@@ -39,6 +42,15 @@ public partial class Tamagotchi : ObservableObject
     
     [ObservableProperty] private string? currentMoodImage;
 
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentHeartImage))] private long? todaysStreak;
+
+    /// <summary>
+    /// The heart to display, depending on TodaysStreak
+    /// </summary>
+    public Bitmap CurrentHeartImage => !streakReachedToday ? GetBitmap("grayHeart.png") : GetBitmap("heart.png");
+
+    private bool streakReachedToday; //Cached value if the streak is already reached
+
     public IAsyncRelayCommand<PlantType> PlantTypeChangedCommand => new AsyncRelayCommand<PlantType>(OnPlantTypeChanged);
     public IAsyncRelayCommand<BrightnessType> BrightnessTypeChangedCommand => new AsyncRelayCommand<BrightnessType>(OnBrightnessTypeChanged);
 
@@ -55,6 +67,8 @@ public partial class Tamagotchi : ObservableObject
     private readonly Dictionary<string, Bitmap> _cachedBitmaps = [];
     
     private IPersonality _personality;
+    private readonly IStreakService _streakService;
+    private readonly IStreakBatch _streakBatch;
 
     /// <summary>
     /// Constructor
@@ -64,18 +78,13 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="personality">personality</param>
     /// <param name="moistureImagesProvider">moistureImagesProvider</param>
     public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality,
-        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IPersonalityFactory personalityFactory)
+        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IStreakService streakService, IStreakBatch streakBatch,  IPersonalityFactory personalityFactory)
     {
+        _streakBatch = streakBatch;
+        _streakService = streakService;
         _tamagotchiRepository = tamagotchiRepository;
         _plant = plant;
-        Dispatcher.UIThread.InvokeAsync((Func<Task>)(async () =>
-        {
-            Name = await _tamagotchiRepository.GetCurrentTamagotchiName();
-            CurrentPlantType = await _tamagotchiRepository.GetPlantType(Name);
-            CurrentBrightnessType = await _tamagotchiRepository.GetBrightnessType(Name);
-            _plant.ChangeMoistureBehaviour(CurrentPlantType);
-            _plant.ChangeBrightnessBehaviour(CurrentBrightnessType);
-        }));
+        Dispatcher.UIThread.InvokeAsync(InitializeTamagotchi);
         _moodInterpreter = moodInterpreter;
         _personalityFactory = personalityFactory;
         _personality = personality;
@@ -85,6 +94,24 @@ public partial class Tamagotchi : ObservableObject
         _plant.OnBrightnessStatusChanged += OnBrightnessStatusChanged;
     }
 
+    private async Task InitializeTamagotchi()
+    {
+        Name = await _tamagotchiRepository.GetCurrentTamagotchiNameAsync();
+        if (Name == null)
+        {
+            Console.WriteLine("Tamagotchi Name is null");
+            throw new ArgumentNullException(Name);
+        }
+        CurrentPlantType = await _tamagotchiRepository.GetPlantTypeAsync(Name);
+        CurrentBrightnessType = await _tamagotchiRepository.GetBrightnessTypeAsync(Name);
+        _plant.ChangeMoistureBehaviour(CurrentPlantType);
+        _plant.ChangeBrightnessBehaviour(CurrentBrightnessType);
+
+        await _streakBatch.StartScheduling(Name);
+        TodaysStreak = await _streakService.GetTodaysStreakAsync(Name);
+    }
+    
+
     /// <summary>
     /// Change moisture behaviour when plantType changes in the UI
     /// </summary>
@@ -92,7 +119,7 @@ public partial class Tamagotchi : ObservableObject
     private async Task OnPlantTypeChanged(PlantType plantType)
     {
         _plant.ChangeMoistureBehaviour(plantType);
-        await _tamagotchiRepository.UpdatePlantType(plantType);
+        await _tamagotchiRepository.UpdatePlantTypeAsync(plantType);
     }
 
     
@@ -103,7 +130,7 @@ public partial class Tamagotchi : ObservableObject
     private async Task OnBrightnessTypeChanged(BrightnessType brightnessType)
     {
         _plant.ChangeBrightnessBehaviour(brightnessType);
-        await _tamagotchiRepository.UpdateBrightnessType(brightnessType);
+        await _tamagotchiRepository.UpdateBrightnessTypeAsync(brightnessType);
     }
 
     /// <summary>
@@ -127,7 +154,7 @@ public partial class Tamagotchi : ObservableObject
         {
             return;
         }
-        await _tamagotchiRepository.UpdateName(tamagotchiName);
+        await _tamagotchiRepository.UpdateNameAsync(tamagotchiName);
     }
 
     /// <summary>
@@ -186,6 +213,40 @@ public partial class Tamagotchi : ObservableObject
                 CurrentMoodImage = null;
             }
         });
+        if (!streakReachedToday && currentMood == Mood.Happy && DatabaseConnectionFactory.IsInitalized)
+        {
+            streakReachedToday = true;
+            Dispatcher.UIThread.InvokeAsync(UpdateStreakAsync);
+        }
+    }
+
+    private async Task UpdateStreakAsync()
+    {
+        Name ??= await _tamagotchiRepository.GetCurrentTamagotchiNameAsync();
+        if (Name == null)
+        {
+            throw new NullReferenceException("Tamagotchiname ist null");
+        }
+
+        var setGoalResult = await _streakService.SetGoalReachedAsync(Name);
+        if (setGoalResult.IsFailure)
+        {
+            switch (setGoalResult.Error)
+            {
+                case StreakError.GoalAlreadyReached goalAlreadyReached:
+                    Console.WriteLine(goalAlreadyReached.Message);
+                    break;
+                case StreakError.TodayAlreadyExists todayAlreadyExists:
+                    Console.WriteLine(todayAlreadyExists.Message);
+                    break;
+                case StreakError.TodayDoesNotExist todayDoesNotExist: //Fatal
+                    throw new ArgumentException(todayDoesNotExist.Message); 
+            }
+        }
+        else
+        {
+            TodaysStreak++;
+        }
     }
 
     private Bitmap GetBitmap(string image)
