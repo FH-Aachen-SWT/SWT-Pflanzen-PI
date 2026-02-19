@@ -6,7 +6,6 @@ public class MuchLight : IBrightnessBehaviour
 {
     public BrightnessStatus Interpret(Brightness brightness)
     {
-        //TODO Echte werte nehmen
         if (brightness < 50)
         {
             return BrightnessStatus.VeryLow;

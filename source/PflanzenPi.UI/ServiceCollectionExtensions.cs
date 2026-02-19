@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
         // Sensor
         TimeSpan pollingRate = TimeSpan.FromMilliseconds(1000);
         ISensor<Moisture> moistureSensor = new MockMoistureSensorSine(40, pollingRate);
-        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, pollingRate);
+        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate);
         // ISensor<Moisture> sensor = new MoistureSensor(pollingRate); //REAL SENSOR
         // ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, pollingRate); //REAL SENSOR
         collection.AddSingleton<ISensor<Moisture>>(moistureSensor);
