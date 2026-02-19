@@ -115,6 +115,9 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="brightnessStatus"></param>
     private void OnBrightnessStatusChanged(BrightnessStatus brightnessStatus)
     {
+        CurrentBrightnessStatus = brightnessStatus;
+        Console.WriteLine($"Updated BrightnessStatus:  {brightnessStatus}");
+        UpdateCurrentMood();
         Dispatcher.UIThread.Post(() =>
         {
             var brightnessImages = _brightnessImagesProvider.ProvideImages(brightnessStatus);
@@ -134,8 +137,23 @@ public partial class Tamagotchi : ObservableObject
     private void OnMoistureStatusChanged(MoistureStatus status)
     {
         CurrentMoistureStatus = status;
-        var currentMood = _moodInterpreter.Interpret(status, CurrentBrightnessStatus);
-        Console.WriteLine($"Updated Status:  {status}");
+        Console.WriteLine($"Updated MoistureStatus:  {status}");
+        UpdateCurrentMood();
+        Dispatcher.UIThread.Post(() =>
+        {
+            var moistureImages = _moistureImagesProvider.ProvideImages(status);
+            CurrentMoistureImages.Clear();
+            foreach (var image in moistureImages)
+            {
+                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
+                CurrentMoistureImages.Add(new Bitmap(AssetLoader.Open(uri)));
+            }
+        });
+    }
+
+    private void UpdateCurrentMood()
+    {
+        var currentMood = _moodInterpreter.Interpret(CurrentMoistureStatus, CurrentBrightnessStatus);
         var moodImageName = _personality.ProvideImage(currentMood);
         Dispatcher.UIThread.Post(() =>
         {
@@ -147,13 +165,6 @@ public partial class Tamagotchi : ObservableObject
             else
             {
                 CurrentMoodImage = null;
-            }
-            var moistureImages = _moistureImagesProvider.ProvideImages(status);
-            CurrentMoistureImages.Clear();
-            foreach (var image in moistureImages)
-            {
-                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
-                CurrentMoistureImages.Add(new Bitmap(AssetLoader.Open(uri)));
             }
         });
     }

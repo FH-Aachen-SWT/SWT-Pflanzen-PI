@@ -7,8 +7,8 @@ public class ExtremesMoodInterpreter : IMoodInterpreter
 {
     public Mood Interpret(MoistureStatus moisture, BrightnessStatus brightness)
     {
-        var moist = Math.Abs(2 - (int)moisture);
-        var bright = Math.Abs(2 - (int)brightness);
+        var moist = Math.Abs((int)MoistureStatus.Satisfied - (int)moisture);
+        var bright = Math.Abs((int)BrightnessStatus.Satisfied - (int)brightness);
 
         var max = moist > bright ? (int)moisture : (int)brightness;
 

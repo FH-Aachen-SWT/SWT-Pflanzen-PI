@@ -4,7 +4,7 @@ public class MockBrightnessSensorSine : Sensor<Brightness>
 {
     private readonly Timer _timer;
 
-    private float pos;
+    private float pos = 4.79f; // Offset damit Brightness und Moisture nicht gleich sind beim mocken
 
     private readonly float _increment = 0.25f;
 

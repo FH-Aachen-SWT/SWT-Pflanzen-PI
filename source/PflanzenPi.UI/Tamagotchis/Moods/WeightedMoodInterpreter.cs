@@ -5,12 +5,12 @@ namespace PflanzenPi.UI.Tamagotchis.Moods;
 
 public class WeightedMoodInterpreter: IMoodInterpreter
 {
-    private readonly double _moistureWeight = 1.3;
-    private readonly double _brightnessWeight = 0.8;
+    private const double MoistureWeight = 1.3;
+    private const double BrightnessWeight = 0.8;
     
     public Mood Interpret(MoistureStatus moisture, BrightnessStatus brightness)
     {
-        var avg = ((int)moisture*_moistureWeight + (int)brightness*_brightnessWeight)/2;
+        var avg = ((int)moisture*MoistureWeight + (int)brightness*BrightnessWeight)/2;
         return avg switch
         {
             < 0.5 or > 3.5 => Angry,
