@@ -8,6 +8,7 @@ using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
+using PflanzenPi.Plants.PredictionModel;
 using PflanzenPi.Sensor;
 using PflanzenPi.UI;
 using PflanzenPi.UI.Tamagotchis;
@@ -36,12 +37,14 @@ public class TamagotchiTest
         var moistureBehaviourMock = new Mock<IMoistureBehaviour>();
         var moistureSensorMock = new Mock<ISensor<Moisture>>();
         
+        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000));
+        
         sensorService.Register(moistureSensorMock.Object);
         sensorService.Register(mockBrightnessSensor.Object);
         moistureBehaviourMockFactory.Setup(factory => factory.Create(It.IsAny<PlantType>())).Returns(moistureBehaviourMock.Object);
 
         var plant = new Plant(sensorService, moistureBehaviourMockFactory.Object,
-            brightnessBehaviourMockFactory.Object);
+            brightnessBehaviourMockFactory.Object, predictionService);
 
         var moodInterpreterMock = new Mock<IMoodInterpreter>();
         var personalityMock = new Mock<IPersonality>();
