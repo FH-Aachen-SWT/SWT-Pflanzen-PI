@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Sensor;
+﻿namespace PflanzenPi.Sensor.Sensors;
 
 /// <summary>
 /// Interface for sensor

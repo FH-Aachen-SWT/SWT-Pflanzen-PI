@@ -1,7 +1,7 @@
 ﻿using System.Device.I2c;
 using Iot.Device.Bh1750fvi;
 
-namespace PflanzenPi.Sensor.Adapter;
+namespace PflanzenPi.Sensor.Sensors.Adapter;
 
 public class I2CBH1750Adapter : II2CAdapter
 {

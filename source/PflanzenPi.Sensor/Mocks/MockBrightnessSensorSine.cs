@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Sensor.Mocks;
+﻿namespace PflanzenPi.Sensor.Sensors.Mocks;
 
 public class MockBrightnessSensorSine : Sensor<Brightness>
 {

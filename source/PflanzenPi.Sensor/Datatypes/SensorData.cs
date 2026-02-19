@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 
-namespace PflanzenPi.Sensor;
+namespace PflanzenPi.Sensor.Sensors;
 
 /// <summary>
 /// Datatype for converted data from sensors

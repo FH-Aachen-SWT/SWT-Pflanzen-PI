@@ -9,7 +9,7 @@ using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 using PflanzenPi.Plants.PredictionModel;
-using PflanzenPi.Sensor;
+using PflanzenPi.Sensor.Sensors;
 using PflanzenPi.UI;
 using PflanzenPi.UI.Tamagotchis;
 using PflanzenPi.UI.Tamagotchis.Moods;

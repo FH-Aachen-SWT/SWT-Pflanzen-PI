@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Sensor;
+﻿namespace PflanzenPi.Sensor.Sensors;
 
 /// <summary>
 /// Abstract class to publish changed data from sensors with given datatype
