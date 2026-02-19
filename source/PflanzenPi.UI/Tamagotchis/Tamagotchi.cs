@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
@@ -46,6 +47,7 @@ public partial class Tamagotchi : ObservableObject
     private readonly Plant _plant;
     private readonly IBrightnessImagesProvider _brightnessImagesProvider;
     private readonly ITamagotchiRepository _tamagotchiRepository;
+    private readonly Dictionary<string, Bitmap> _cachedBitmaps = [];
 
     /// <summary>
     /// Constructor
@@ -156,9 +158,15 @@ public partial class Tamagotchi : ObservableObject
         });
     }
 
-    private static Bitmap GetBitmap(string image)
+    private Bitmap GetBitmap(string image)
     {
+        if (_cachedBitmaps.TryGetValue(image, out Bitmap? value))
+        {
+            return value;
+        }
         var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
-        return new Bitmap(AssetLoader.Open(uri));
+        var bitmap = new Bitmap(AssetLoader.Open(uri));
+        _cachedBitmaps[image] = bitmap;
+        return bitmap;
     }
 }
