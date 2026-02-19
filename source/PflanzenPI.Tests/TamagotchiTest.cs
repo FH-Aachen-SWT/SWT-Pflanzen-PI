@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using FluentAssertions;
 using Moq;
+using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
@@ -46,6 +47,7 @@ public class TamagotchiTest
         var personalityMock = new Mock<IPersonality>();
         var moistureImagesProviderMock = new Mock<IMoistureImagesProvider>();
         var brightnessImagesProviderMock = new Mock<IBrightnessImagesProvider>();
+        var repoMock = new Mock<ITamagotchiRepository>();
 
         var status = MoistureStatus.Satisfied;
         var mood = Mood.Happy;
@@ -61,7 +63,7 @@ public class TamagotchiTest
             .Returns(["sun.png", "sun.png", "sun.png"]);
 
         var tamagotchi = () => new Tamagotchi(plant, moodInterpreterMock.Object, personalityMock.Object,
-            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object);
+            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object);
 
         tamagotchi.Should().NotThrow();
     }
