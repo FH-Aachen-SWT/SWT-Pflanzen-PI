@@ -27,9 +27,8 @@
             <Border Grid.Row="1" Background="{StaticResource Strich}"/>
             <Border Grid.Row="2" Background="{StaticResource Boden}"/>
         </Grid>
-        
         <!-- Moisture Images -->
-        <Grid x:Name="MoistureImages" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0,60,0,0" PointerPressed="MoistureImages_OnPointerPressed">
+        <Grid x:Name="MoistureImages" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0,80,0,0" PointerPressed="MoistureImages_OnPointerPressed">
             <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentMoistureImages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -68,7 +67,7 @@
         </Popup>
         
         <!-- Brightness Images -->
-        <Grid x:Name="BrightnessImages" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,60,0,0" PointerPressed="BrightnessImages_OnPointerPressed">
+        <Grid x:Name="BrightnessImages" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,80,0,0" PointerPressed="BrightnessImages_OnPointerPressed">
             <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentBrightnessImages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -155,6 +154,23 @@
                    Stretch="None"
                    Margin="0,0,0,0"/>
         </Grid>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="5">
+
+            <Image Width="48" Height="28" Source="../Assets/can.png" Margin="0,0,8,0"/>
+            <TextBlock Text="2h"
+                       VerticalAlignment="Bottom"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="5">
+            
+            <TextBlock Text="streak"
+                       VerticalAlignment="Bottom"/>
+            <Image Width="28" Height="28" Source="../Assets/heart.png" Margin="8,0,0,0"/>
+        </StackPanel>
     </Grid>
-  
 </Window>
