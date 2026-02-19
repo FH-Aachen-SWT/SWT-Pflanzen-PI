@@ -47,10 +47,9 @@
         <!-- Popup for Moisture Behaviours -->
         <Popup x:Name="MoistureBehaviourPopup"
                PlacementTarget="{Binding #MoistureImages}"
-               Placement="Right"
+               Placement="Right" IsLightDismissEnabled="True"
         >
-            <Border Background="White"
-                    Padding="10"
+            <Border Background="Transparent"
                     CornerRadius="8">
 
                 <ComboBox x:Name="PlantTypeComboBox" Width="150"
@@ -86,10 +85,9 @@
         <!-- Popup for brightness behaviours-->
         <Popup x:Name="BrightnessBehavioursPopup"
                PlacementTarget="{Binding #BrightnessImages}"
-               Placement="Left"
+               Placement="Left" IsLightDismissEnabled="True"
         >
-            <Border Background="White"
-                    Padding="10"
+            <Border Background="Transparent"
                     CornerRadius="8">
 
                 <ComboBox x:Name="BrightnessTypeComboBox" 
