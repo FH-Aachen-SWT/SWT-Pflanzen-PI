@@ -154,6 +154,7 @@
                    Stretch="None"
                    Margin="0,0,0,0"/>
         </Grid>
+        <!-- Next Watering -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
@@ -163,6 +164,7 @@
             <TextBlock Text="2h"
                        VerticalAlignment="Bottom"/>
         </StackPanel>
+        <!-- Streak -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
