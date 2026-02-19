@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
@@ -17,6 +18,9 @@ public static class ServiceCollectionExtensions
 {
     public static void AddCommonServices(this IServiceCollection collection)
     {
+        //Repository
+        collection.AddSingleton<ITamagotchiRepository, TamagotchiRepository>();
+        
         // Sensor
         ISensor<Moisture> moistureSensor = new MockMoistureSensorSine(40, TimeSpan.FromMilliseconds(1000));
         ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, TimeSpan.FromMilliseconds(1000));
