@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using Avalonia.Media.Imaging;
 using PflanzenPi.Plants;
-using PflanzenPi.Sensor;
+using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.UI.Tamagotchis.States;
 

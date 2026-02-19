@@ -1,7 +1,7 @@
 ﻿using System.Device.I2c;
 using Iot.Device.Ads1115;
 
-namespace PflanzenPi.Sensor.Adapter;
+namespace PflanzenPi.Sensor.Sensors.Adapter;
 
 public class I2CAdcAdapter : II2CAdapter
 {

@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
-using PflanzenPi.Sensor;
-using PflanzenPi.Sensor.Adapter;
+using PflanzenPi.Sensor.Sensors;
+using PflanzenPi.Sensor.Sensors.Adapter;
 
 namespace PflanzenPI.Tests;
 

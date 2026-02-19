@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace PflanzenPi.Sensor.Mocks;
+namespace PflanzenPi.Sensor.Sensors.Mocks;
 
 /// <summary>
 /// Mock for the moisture sensor
