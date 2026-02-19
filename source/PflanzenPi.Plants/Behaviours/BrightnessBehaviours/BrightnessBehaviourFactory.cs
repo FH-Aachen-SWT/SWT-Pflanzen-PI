@@ -1,4 +1,6 @@
-﻿namespace PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
+﻿using PflanzenPi.Plants.Types;
+
+namespace PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 
 /// <summary>
 /// BrightnessBehviourFactory Implementation

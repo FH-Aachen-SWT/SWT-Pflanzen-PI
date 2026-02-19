@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using PflanzenPI.Persistence.Database;
 using PflanzenPi.Plants;
+using PflanzenPi.Plants.Types;
 
 namespace PflanzenPI.Persistence.Repository;
 
@@ -39,6 +40,16 @@ public class TamagotchiRepository : ITamagotchiRepository
                                             SET brightnessType = @BrightnessType 
                                             WHERE isSelected = 1
                                             """, new { BrightnessType= brightnessType });
+    }
+
+    public async Task UpdatePersonalityType(PersonalityType personalityType)
+    {
+        await using var connection = await DatabaseConnectionFactory.Create();
+        await connection.ExecuteScalarAsync("""
+                                            UPDATE Tamagotchi
+                                            SET personalityType = @PersonalityType
+                                            WHERE isSelected = 1
+                                            """, new {PersonalityType = personalityType});
     }
 
     public async Task UpdateName(string newName)

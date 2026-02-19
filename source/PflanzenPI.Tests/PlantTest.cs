@@ -4,6 +4,7 @@ using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 using PflanzenPi.Plants.PredictionModel;
+using PflanzenPi.Plants.Types;
 using PflanzenPi.Sensor;
 
 namespace PflanzenPI.Tests;

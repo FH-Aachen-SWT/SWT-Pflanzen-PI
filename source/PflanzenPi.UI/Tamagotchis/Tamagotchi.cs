@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
+using PflanzenPi.Plants.Types;
 using PflanzenPi.UI.Tamagotchis.Moods;
 using PflanzenPi.UI.Tamagotchis.Personalities;
 using PflanzenPi.UI.Tamagotchis.States;
@@ -25,6 +26,8 @@ public partial class Tamagotchi : ObservableObject
     [ObservableProperty] private PlantType currentPlantType;
     
     [ObservableProperty] private BrightnessType currentBrightnessType;
+
+    [ObservableProperty] private PersonalityType currentPersonalityType;
     
     [ObservableProperty] private MoistureStatus currentMoistureStatus;
     
@@ -38,16 +41,20 @@ public partial class Tamagotchi : ObservableObject
 
     public IAsyncRelayCommand<PlantType> PlantTypeChangedCommand => new AsyncRelayCommand<PlantType>(OnPlantTypeChanged);
     public IAsyncRelayCommand<BrightnessType> BrightnessTypeChangedCommand => new AsyncRelayCommand<BrightnessType>(OnBrightnessTypeChanged);
-    
+
+    public IAsyncRelayCommand<PersonalityType> PersonalityTypeChangedCommand =>
+        new AsyncRelayCommand<PersonalityType>(OnPersonalityTypeChanged);
     public IAsyncRelayCommand<string> NameChangedCommand => new AsyncRelayCommand<string>(OnTamagotchiNameChanged);
     
     private readonly IMoodInterpreter _moodInterpreter;
-    private readonly IPersonality _personality;
+    private readonly IPersonalityFactory _personalityFactory;
     private readonly IMoistureImagesProvider _moistureImagesProvider;
     private readonly Plant _plant;
     private readonly IBrightnessImagesProvider _brightnessImagesProvider;
     private readonly ITamagotchiRepository _tamagotchiRepository;
     private readonly Dictionary<string, Bitmap> _cachedBitmaps = [];
+    
+    private IPersonality _personality;
 
     /// <summary>
     /// Constructor
@@ -57,19 +64,20 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="personality">personality</param>
     /// <param name="moistureImagesProvider">moistureImagesProvider</param>
     public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality,
-        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository)
+        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IPersonalityFactory personalityFactory)
     {
         _tamagotchiRepository = tamagotchiRepository;
         _plant = plant;
-        Dispatcher.UIThread.InvokeAsync(async () =>
+        Dispatcher.UIThread.InvokeAsync((Func<Task>)(async () =>
         {
             Name = await _tamagotchiRepository.GetCurrentTamagotchiName();
             CurrentPlantType = await _tamagotchiRepository.GetPlantType(Name);
             CurrentBrightnessType = await _tamagotchiRepository.GetBrightnessType(Name);
             _plant.ChangeMoistureBehaviour(CurrentPlantType);
             _plant.ChangeBrightnessBehaviour(CurrentBrightnessType);
-        });
+        }));
         _moodInterpreter = moodInterpreter;
+        _personalityFactory = personalityFactory;
         _personality = personality;
         _moistureImagesProvider = moistureImagesProvider;
         _brightnessImagesProvider  = brightnessImagesProvider;
@@ -96,6 +104,17 @@ public partial class Tamagotchi : ObservableObject
     {
         _plant.ChangeBrightnessBehaviour(brightnessType);
         await _tamagotchiRepository.UpdateBrightnessType(brightnessType);
+    }
+
+    /// <summary>
+    /// Change personality type when personalityType changes in the UI
+    /// </summary>
+    /// <param name="personalityType">new personality</param>
+    private async Task OnPersonalityTypeChanged(PersonalityType personalityType)
+    {
+        _personality = _personalityFactory.Create(personalityType);
+        _plant.ForceUpdate();
+        await _tamagotchiRepository.UpdatePersonalityType(personalityType);
     }
 
     /// <summary>

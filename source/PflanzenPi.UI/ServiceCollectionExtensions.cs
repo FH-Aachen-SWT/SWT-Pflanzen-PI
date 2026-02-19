@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
         // Behaviours, Mood und Personality
         collection.AddSingleton<IMoistureBehaviourFactory, MoistureBehaviourFactory>();
         collection.AddSingleton<IBrightnessBehaviourFactory, BrightnessBehaviourFactory>();
+        collection.AddSingleton<IPersonalityFactory, PersonalityFactory>();
         collection.AddSingleton<IMoistureImagesProvider, MoistureImagesProvider>();
         collection.AddSingleton<IBrightnessImagesProvider, BrightnessImagesProvider>();
         collection.AddSingleton<IMoodInterpreter, WeightedMoodInterpreter>();
