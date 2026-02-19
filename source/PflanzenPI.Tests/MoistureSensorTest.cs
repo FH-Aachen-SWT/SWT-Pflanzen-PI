@@ -11,8 +11,8 @@ public class MoistureSensorTest
     [Fact]
     private async Task TestReadFromPi()
     {
-        var adc = new Mock<IAdcAdapter>();
-        adc.Setup(s => s.ReadRaw()).Returns(1);
+        var adc = new Mock<II2CAdapter>();
+        adc.Setup(s => s.ReadRawShort()).Returns(1);
         TimeSpan interval = TimeSpan.FromSeconds(1);
         var ms = new MoistureSensor(interval, adc.Object);
 

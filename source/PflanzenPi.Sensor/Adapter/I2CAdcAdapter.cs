@@ -3,18 +3,23 @@ using Iot.Device.Ads1115;
 
 namespace PflanzenPi.Sensor.Adapter;
 
-public class AdcAdapter : IAdcAdapter
+public class I2CAdcAdapter : II2CAdapter
 {
     private readonly Ads1115 _adc;
 
-    public AdcAdapter(Ads1115? adc = null)
+    public I2CAdcAdapter(Ads1115? adc = null)
     {
         _adc = adc ?? CreateDefaultAdc();
     }
     
-    public short ReadRaw()
+    public short ReadRawShort()
     {
         return _adc.ReadRaw();
+    }
+
+    public double ReadRawDouble()
+    {
+        throw new NotImplementedException();
     }
 
     private Ads1115 CreateDefaultAdc()

@@ -10,7 +10,7 @@ namespace PflanzenPi.Sensor;
 public class MoistureSensor : Sensor<Moisture>
 {
     private readonly Timer _timer;
-    private readonly IAdcAdapter _adc; // custom Interface zur Typkapselung und um Mocking zu ermöglichen
+    private readonly II2CAdapter _adc; // custom Interface zur Typkapselung und um Mocking zu ermöglichen
     private const float MaximumVoltage = 3.3f;
     private const float Gain = 4.096f;
     
@@ -19,9 +19,9 @@ public class MoistureSensor : Sensor<Moisture>
     /// </summary>
     /// <param name="interval">Interval in which data is to be read</param>
     /// <param name="adc">For test purposes the adc can be injected, default is null</param>
-    public MoistureSensor(TimeSpan interval, IAdcAdapter? adc = null)
+    public MoistureSensor(TimeSpan interval, II2CAdapter? adc = null)
     {
-        _adc = adc ?? new AdcAdapter();
+        _adc = adc ?? new I2CAdcAdapter();
         _timer = new Timer(ReadFromPi , null, TimeSpan.FromSeconds(0), interval);
     }
         
@@ -31,7 +31,7 @@ public class MoistureSensor : Sensor<Moisture>
     /// <returns>Raw data converted to moisture</returns>
     private void ReadFromPi(Object? _)
     {
-        var raw = _adc.ReadRaw();
+        var raw = _adc.ReadRawShort();
         float percentage = raw * (Gain / Int16.MaxValue + 1) * (100.0f / MaximumVoltage); // Lieber Int16.MaxValue + 1 da Int16.MaxValue als 32767 definiert ist aber ADS115 technisch mit 32768 arbeitet.
         /*
          * Bei Kalibrierung des Sensors ergab sich:
