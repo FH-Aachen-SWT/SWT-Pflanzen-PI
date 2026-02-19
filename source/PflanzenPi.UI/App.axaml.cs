@@ -21,7 +21,7 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        DatabaseConnectionFactory.Version = 0;
+        DatabaseConnectionFactory.Version = 1;
         // If you use CommunityToolkit, line below is needed to remove Avalonia data validation.
         // Without this line you will get duplicate validations from both Avalonia and CT
         BindingPlugins.DataValidators.RemoveAt(0);

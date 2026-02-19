@@ -1,4 +1,5 @@
 ﻿using PflanzenPi.Plants;
+using PflanzenPi.Plants.Types;
 
 namespace PflanzenPI.Persistence.Repository;
 
@@ -27,6 +28,13 @@ public interface ITamagotchiRepository
     /// <param name="brightnessType"></param>
     /// <returns></returns>
     Task UpdateBrightnessType(BrightnessType brightnessType);
+
+    /// <summary>
+    /// Update the personalityType of the current tamagotchi
+    /// </summary>
+    /// <param name="personalityType">new personality</param>
+    /// <returns></returns>
+    Task UpdatePersonalityType(PersonalityType personalityType);
     
     /// <summary>
     /// Update the name of the current tamagotchi 

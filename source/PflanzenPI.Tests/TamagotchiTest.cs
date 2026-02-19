@@ -9,6 +9,8 @@ using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 using PflanzenPi.Plants.PredictionModel;
+using PflanzenPi.Plants.Types;
+using PflanzenPi.Sensor;
 using PflanzenPi.Sensor.Sensors;
 using PflanzenPi.UI;
 using PflanzenPi.UI.Tamagotchis;
@@ -51,6 +53,7 @@ public class TamagotchiTest
         var moistureImagesProviderMock = new Mock<IMoistureImagesProvider>();
         var brightnessImagesProviderMock = new Mock<IBrightnessImagesProvider>();
         var repoMock = new Mock<ITamagotchiRepository>();
+        var personalityFactoryMock = new Mock<IPersonalityFactory>();
 
         var moistureStatus = MoistureStatus.Satisfied;
         var brightnessStatus = BrightnessStatus.Satisfied;
@@ -67,7 +70,7 @@ public class TamagotchiTest
             .Returns(["sun.png", "sun.png", "sun.png"]);
 
         var tamagotchi = () => new Tamagotchi(plant, moodInterpreterMock.Object, personalityMock.Object,
-            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object);
+            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object, personalityFactoryMock.Object);
 
         tamagotchi.Should().NotThrow();
     }

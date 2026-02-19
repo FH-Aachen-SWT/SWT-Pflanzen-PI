@@ -20,6 +20,11 @@ public partial class MainWindow : Window
         BrightnessBehavioursPopup.IsOpen = !BrightnessBehavioursPopup.IsOpen;
     }
 
+    private void PlantImage_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        PersonalitiesPopup.IsOpen = !PersonalitiesPopup.IsOpen;
+    }
+
     private void RootGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         RootGrid.Focus();

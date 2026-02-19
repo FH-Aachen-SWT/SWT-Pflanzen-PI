@@ -145,13 +145,39 @@
             
             <!-- Image -->
             <Image x:Name="PlantImage" 
-                Grid.Row="1"
-                anim:ImageBehavior.AnimatedSource="{Binding Tamagotchi.CurrentMoodImage}"
+                   PointerPressed="PlantImage_OnPointerPressed"
+                   Grid.Row="1"
+                   anim:ImageBehavior.AnimatedSource="{Binding Tamagotchi.CurrentMoodImage}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Stretch="None"
                    Margin="0,0,0,0"/>
         </Grid>
+        
+        <!-- Popup for personalities-->
+        <Popup x:Name="PersonalitiesPopup"
+               PlacementTarget="{Binding #PlantImage}"
+               Placement="Center" IsLightDismissEnabled="True"
+        >
+            <Border Background="Transparent"
+                    CornerRadius="8">
+        
+                <ComboBox x:Name="PersonalityTypeComboBox" 
+                          Width="150"
+                          ItemsSource="{Binding AllPersonalityTypes}"
+                          SelectedItem="{Binding Tamagotchi.CurrentPersonalityType}">
+                                  
+                    <Interaction.Behaviors>
+                        <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #PersonalityTypeComboBox}">
+                            <InvokeCommandAction Command="{Binding Tamagotchi.PersonalityTypeChangedCommand}" 
+                                                 CommandParameter="{Binding #PersonalityTypeComboBox.SelectedItem}"></InvokeCommandAction>
+                        </EventTriggerBehavior>
+                    </Interaction.Behaviors>
+                </ComboBox>
+        
+            </Border>
+        </Popup>
+        
         <!-- Next Watering -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
@@ -162,6 +188,7 @@
             <TextBlock Text="2h"
                        VerticalAlignment="Bottom"/>
         </StackPanel>
+        
         <!-- Streak -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
