@@ -1,5 +1,6 @@
 ﻿using System.Device.I2c;
 using Iot.Device.Ads1115;
+using PflanzenPi.Sensor.Adapter;
 
 namespace PflanzenPi.Sensor;
 
@@ -9,7 +10,7 @@ namespace PflanzenPi.Sensor;
 public class MoistureSensor : Sensor<Moisture>
 {
     private readonly Timer _timer;
-    private readonly Ads1115 _adc;
+    private readonly IAdcAdapter _adc; // custom Interface zur Typkapselung und um Mocking zu ermöglichen
     private const float MaximumVoltage = 3.3f;
     private const float Gain = 4.096f;
     
@@ -17,16 +18,15 @@ public class MoistureSensor : Sensor<Moisture>
     /// Constructor
     /// </summary>
     /// <param name="interval">Interval in which data is to be read</param>
-    public MoistureSensor(TimeSpan interval)
+    /// <param name="adc">For test purposes the adc can be injected, default is null</param>
+    public MoistureSensor(TimeSpan interval, IAdcAdapter? adc = null)
     {
-        I2cConnectionSettings config = new I2cConnectionSettings(1,0x48);
-        I2cDevice device = I2cDevice.Create(config);
-        _adc = new Ads1115(device);
+        _adc = adc ?? new AdcAdapter();
         _timer = new Timer(ReadFromPi , null, TimeSpan.FromSeconds(0), interval);
     }
         
     /// <summary>
-    /// Reads raw data from Raspberry PI
+    /// Reads raw data from Raspberry PI and converts to moisture
     /// </summary>
     /// <returns>Raw data converted to moisture</returns>
     private void ReadFromPi(Object? _)

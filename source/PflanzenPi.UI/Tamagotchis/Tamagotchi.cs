@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
@@ -46,6 +47,7 @@ public partial class Tamagotchi : ObservableObject
     private readonly Plant _plant;
     private readonly IBrightnessImagesProvider _brightnessImagesProvider;
     private readonly ITamagotchiRepository _tamagotchiRepository;
+    private readonly Dictionary<string, Bitmap> _cachedBitmaps = [];
 
     /// <summary>
     /// Constructor
@@ -124,8 +126,7 @@ public partial class Tamagotchi : ObservableObject
             CurrentBrightnessImages.Clear();
             foreach (var image in brightnessImages)
             {
-                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
-                CurrentBrightnessImages.Add(new Bitmap(AssetLoader.Open(uri)));
+                CurrentBrightnessImages.Add(GetBitmap(image));
             }
         });
     }
@@ -145,8 +146,7 @@ public partial class Tamagotchi : ObservableObject
             CurrentMoistureImages.Clear();
             foreach (var image in moistureImages)
             {
-                var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
-                CurrentMoistureImages.Add(new Bitmap(AssetLoader.Open(uri)));
+                CurrentMoistureImages.Add(GetBitmap(image));
             }
         });
     }
@@ -167,5 +167,17 @@ public partial class Tamagotchi : ObservableObject
                 CurrentMoodImage = null;
             }
         });
+    }
+
+    private Bitmap GetBitmap(string image)
+    {
+        if (_cachedBitmaps.TryGetValue(image, out Bitmap? value))
+        {
+            return value;
+        }
+        var uri = new Uri($"{AssetConstants.ASSET_BASE_PATH}{image}");
+        var bitmap = new Bitmap(AssetLoader.Open(uri));
+        _cachedBitmaps[image] = bitmap;
+        return bitmap;
     }
 }
