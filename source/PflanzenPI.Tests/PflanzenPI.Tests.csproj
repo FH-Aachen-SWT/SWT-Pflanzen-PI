@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PflanzenPi.Plants\PflanzenPi.Plants.csproj" />
     <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
+    <ProjectReference Include="..\PflanzenPi.UI\PflanzenPi.UI.csproj" />
   </ItemGroup>
 
 </Project>
