@@ -23,9 +23,9 @@ public class BrightnessSensor : Sensor<Brightness>
     }
         
     /// <summary>
-    /// Reads raw data from Raspberry PI and converts to moisture
+    /// Reads raw data from Raspberry PI and converts to brightness
     /// </summary>
-    /// <returns>Raw data converted to moisture</returns>
+    /// <returns>Raw data converted to brightness</returns>
     private void ReadFromPi(Object? _)
     {
         var raw = _adc.ReadRawDouble();
