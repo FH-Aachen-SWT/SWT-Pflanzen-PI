@@ -32,7 +32,7 @@ public class MoistureSensor : Sensor<Moisture>
     private void ReadFromPi(Object? _)
     {
         var raw = _adc.ReadRawShort();
-        float percentage = raw * (Gain / Int16.MaxValue + 1) * (100.0f / MaximumVoltage); // Lieber Int16.MaxValue + 1 da Int16.MaxValue als 32767 definiert ist aber ADS115 technisch mit 32768 arbeitet.
+        float percentage = raw * (Gain / (Int16.MaxValue + 1)) * (100.0f / MaximumVoltage); // Lieber Int16.MaxValue + 1 da Int16.MaxValue als 32767 definiert ist aber ADS115 technisch mit 32768 arbeitet.
         /*
          * Bei Kalibrierung des Sensors ergab sich:
          * Völlige Nässe -> 24%

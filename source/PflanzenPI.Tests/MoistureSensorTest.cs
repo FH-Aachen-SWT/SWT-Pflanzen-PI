@@ -12,12 +12,12 @@ public class MoistureSensorTest
     private async Task TestReadFromPi()
     {
         var adc = new Mock<II2CAdapter>();
-        adc.Setup(s => s.ReadRawShort()).Returns(1);
+        adc.Setup(s => s.ReadRawShort()).Returns(17480);
         TimeSpan interval = TimeSpan.FromSeconds(1);
         var ms = new MoistureSensor(interval, adc.Object);
 
         await Task.Delay(TimeSpan.FromSeconds(2));
 
-        ms.Current.Should().BeEquivalentTo(new Moisture(73.38636F));
+        ms.Current.Should().BeEquivalentTo(new Moisture(1.5757446F));
     }
 }
