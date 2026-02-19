@@ -30,6 +30,5 @@ public class BrightnessSensor : Sensor<Brightness>
         
         Brightness brightness = new Brightness(raw);
         Publish(brightness);
-        Console.WriteLine($"LUX: {raw}");
     }
 }

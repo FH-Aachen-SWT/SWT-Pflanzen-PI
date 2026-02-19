@@ -1,13 +1,11 @@
-﻿using System.Data;
-using Dapper;
-using Microsoft.Data.Sqlite;
-using PflanzenPI.Persistence.Database;
+﻿using Dapper;
+using System.Data;
 
 namespace PflanzenPI.Persistence.Schema;
 
 public class TamagotchiSchema : ISchema
 {
-    public async Task OnMigrate(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
+    public async Task OnMigrateAsync(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
     {
         switch (schemaVersion)
         {
@@ -23,7 +21,7 @@ public class TamagotchiSchema : ISchema
                     """,
                 transaction: transaction);
                 await connection.ExecuteAsync("""
-                                                CREATE UNIQUE INDEX UX_OnlyOneSelected
+                                                CREATE UNIQUE INDEX IF NOT EXISTS UX_OnlyOneSelected
                                                 ON Tamagotchi(isSelected)
                                                 WHERE isSelected = 1;
                                               """, transaction: transaction);
@@ -34,17 +32,25 @@ public class TamagotchiSchema : ISchema
                                               ADD COLUMN personalityType INTEGER NOT NULL DEFAULT 0
                                               """);
                 break;
-            
+
         }
 
     }
 
-    public Task OnDowngrade(IDbConnection connection, IDbTransaction transaction, int toVersion)
+    public async Task OnDowngradeAsync(IDbConnection connection, IDbTransaction transaction, int toVersion)
     {
-        return Task.CompletedTask;
+        switch (toVersion)
+        {
+            case 0:
+                await connection.ExecuteAsync("""
+                                              ALTER TABLE Tamagotchi
+                                              DROP COLUMN personalityType;
+                                              """, transaction: transaction);
+                break;
+        }
     }
 
-    public async Task OnInitialize(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
+    public async Task OnInitializeAsync(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
     {
         switch (schemaVersion)
         {

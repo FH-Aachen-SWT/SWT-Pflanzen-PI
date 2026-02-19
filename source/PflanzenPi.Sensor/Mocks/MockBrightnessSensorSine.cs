@@ -29,7 +29,6 @@ public class MockBrightnessSensorSine : Sensor<Brightness>
         getNextPos();
         var brightness = (float) (3*Math.Sin(pos) + _middle) * 10000;
         Publish(new Brightness(brightness));
-        Console.WriteLine($"MOCK READ BRIGHTNESS:  {brightness}");
     }
 
     /// <summary>

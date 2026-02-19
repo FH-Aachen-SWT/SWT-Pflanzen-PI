@@ -195,9 +195,9 @@
                     VerticalAlignment="Bottom"
                     Margin="5">
             
-            <TextBlock Text="streak"
+            <TextBlock Text="{Binding Tamagotchi.TodaysStreak}"
                        VerticalAlignment="Bottom"/>
-            <Image Width="28" Height="28" Source="../Assets/heart.png" Margin="8,0,0,0"/>
+            <Image Width="28" Height="28" Source="{Binding Tamagotchi.CurrentHeartImage}" Margin="8,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
