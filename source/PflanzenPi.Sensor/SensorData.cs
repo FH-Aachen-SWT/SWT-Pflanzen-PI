@@ -1,10 +1,13 @@
-﻿namespace PflanzenPi.Sensor;
+﻿using System.Numerics;
+using System.Runtime.Intrinsics.X86;
+
+namespace PflanzenPi.Sensor;
 
 /// <summary>
 /// Datatype for converted data from sensors
 /// </summary>
 /// <typeparam name="T">Raw datatype</typeparam>
-public abstract class SensorData<T>
+public abstract class SensorData<T> where T : INumber<T>
 {
     public T Data { get; }
 
@@ -27,4 +30,12 @@ public abstract class SensorData<T>
         return sensorData.Data;
     }
     
+    public static T operator +(SensorData<T> left, SensorData<T> right)
+    {
+        return left.Data+right.Data;
+    }
+    public static T operator -(SensorData<T> left, SensorData<T> right)
+    {
+        return left.Data-right.Data;
+    }
 }

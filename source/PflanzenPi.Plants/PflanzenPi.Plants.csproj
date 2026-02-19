@@ -11,4 +11,8 @@
     <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PredictionModel\" />
+  </ItemGroup>
+
 </Project>

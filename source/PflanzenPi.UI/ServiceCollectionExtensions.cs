@@ -22,10 +22,11 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<ITamagotchiRepository, TamagotchiRepository>();
         
         // Sensor
-        ISensor<Moisture> moistureSensor = new MockMoistureSensorSine(40, TimeSpan.FromMilliseconds(1000));
-        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, TimeSpan.FromMilliseconds(1000));
-        // ISensor<Moisture> sensor = new MoistureSensor(TimeSpan.FromSeconds(1)); //REAL SENSOR
-        // ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, TimeSpan.FromMilliseconds(1000)); //REAL SENSOR
+        TimeSpan pollingRate = TimeSpan.FromMilliseconds(1000);
+        ISensor<Moisture> moistureSensor = new MockMoistureSensorSine(40, pollingRate);
+        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, pollingRate);
+        // ISensor<Moisture> sensor = new MoistureSensor(pollingRate); //REAL SENSOR
+        // ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(40, pollingRate); //REAL SENSOR
         collection.AddSingleton<ISensor<Moisture>>(moistureSensor);
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
         // Sensor-Service
