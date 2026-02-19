@@ -49,17 +49,18 @@ public class TamagotchiTest
         var brightnessImagesProviderMock = new Mock<IBrightnessImagesProvider>();
         var repoMock = new Mock<ITamagotchiRepository>();
 
-        var status = MoistureStatus.Satisfied;
+        var moistureStatus = MoistureStatus.Satisfied;
+        var brightnessStatus = BrightnessStatus.Satisfied;
         var mood = Mood.Happy;
         var moodImageName = "satisfied.gif";
         
         // Antworten für OnMoistureStatusChanged
-        moodInterpreterMock.Setup(s => s.Interpret(status)).Returns(mood);
+        moodInterpreterMock.Setup(s => s.Interpret(moistureStatus, brightnessStatus)).Returns(mood);
         personalityMock.Setup(s => s.ProvideImage(mood)).Returns(moodImageName);
-        moistureImagesProviderMock.Setup(s => s.ProvideImages(status)).Returns(["drop.png", "drop.png", "drop.png"]);
+        moistureImagesProviderMock.Setup(s => s.ProvideImages(moistureStatus)).Returns(["drop.png", "drop.png", "drop.png"]);
         
         // Antworten für OnBrightnessStatusChanged
-        brightnessImagesProviderMock.Setup(s => s.ProvideImages(BrightnessStatus.Satisfied))
+        brightnessImagesProviderMock.Setup(s => s.ProvideImages(brightnessStatus))
             .Returns(["sun.png", "sun.png", "sun.png"]);
 
         var tamagotchi = () => new Tamagotchi(plant, moodInterpreterMock.Object, personalityMock.Object,

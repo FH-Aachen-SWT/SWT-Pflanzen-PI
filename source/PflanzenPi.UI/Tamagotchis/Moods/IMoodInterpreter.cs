@@ -11,6 +11,7 @@ public interface IMoodInterpreter
     /// Interprets mood
     /// </summary>
     /// <param name="moisture">Moisture status</param>
+    /// <param name="brightness"></param>
     /// <returns>mood</returns>
-    Mood Interpret(MoistureStatus moisture);
+    Mood Interpret(MoistureStatus moisture, BrightnessStatus brightness);
 }

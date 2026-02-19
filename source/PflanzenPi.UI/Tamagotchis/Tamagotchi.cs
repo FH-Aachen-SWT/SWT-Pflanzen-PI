@@ -29,7 +29,7 @@ public partial class Tamagotchi : ObservableObject
     [ObservableProperty] private MoistureStatus currentMoistureStatus;
     
     [ObservableProperty] private BrightnessStatus currentBrightnessStatus;
-
+    
     [ObservableProperty] private ObservableCollection<Bitmap> currentMoistureImages = new();
     
     [ObservableProperty] private ObservableCollection<Bitmap> currentBrightnessImages = new();
@@ -117,6 +117,9 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="brightnessStatus"></param>
     private void OnBrightnessStatusChanged(BrightnessStatus brightnessStatus)
     {
+        CurrentBrightnessStatus = brightnessStatus;
+        Console.WriteLine($"Updated BrightnessStatus:  {brightnessStatus}");
+        UpdateCurrentMood();
         Dispatcher.UIThread.Post(() =>
         {
             var brightnessImages = _brightnessImagesProvider.ProvideImages(brightnessStatus);
@@ -135,8 +138,22 @@ public partial class Tamagotchi : ObservableObject
     private void OnMoistureStatusChanged(MoistureStatus status)
     {
         CurrentMoistureStatus = status;
-        var currentMood = _moodInterpreter.Interpret(status);
-        Console.WriteLine($"Updated Status:  {status}");
+        Console.WriteLine($"Updated MoistureStatus:  {status}");
+        UpdateCurrentMood();
+        Dispatcher.UIThread.Post(() =>
+        {
+            var moistureImages = _moistureImagesProvider.ProvideImages(status);
+            CurrentMoistureImages.Clear();
+            foreach (var image in moistureImages)
+            {
+                CurrentMoistureImages.Add(GetBitmap(image));
+            }
+        });
+    }
+
+    private void UpdateCurrentMood()
+    {
+        var currentMood = _moodInterpreter.Interpret(CurrentMoistureStatus, CurrentBrightnessStatus);
         var moodImageName = _personality.ProvideImage(currentMood);
         Dispatcher.UIThread.Post(() =>
         {
@@ -148,12 +165,6 @@ public partial class Tamagotchi : ObservableObject
             else
             {
                 CurrentMoodImage = null;
-            }
-            var moistureImages = _moistureImagesProvider.ProvideImages(status);
-            CurrentMoistureImages.Clear();
-            foreach (var image in moistureImages)
-            {
-                CurrentMoistureImages.Add(GetBitmap(image));
             }
         });
     }
