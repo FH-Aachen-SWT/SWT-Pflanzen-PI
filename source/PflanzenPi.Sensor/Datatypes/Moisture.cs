@@ -17,4 +17,15 @@ public class Moisture : SensorData<float>
             throw new ArgumentOutOfRangeException(nameof(data), "Keinen gültigen Wert von der PI gelesen");
         }
     }
+    
+    /// <summary>
+    /// Implicit conversion from raw datatype to SensorData
+    /// </summary>
+    /// <param name="sensorData">SensorData</param>
+    /// <returns>raw datatype</returns>
+    public static implicit operator Moisture(float sensorData)
+    {
+        return new Moisture(sensorData);
+    }
+
 }
