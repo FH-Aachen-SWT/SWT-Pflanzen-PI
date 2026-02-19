@@ -37,14 +37,12 @@ public class TamagotchiTest
         var moistureBehaviourMock = new Mock<IMoistureBehaviour>();
         var moistureSensorMock = new Mock<ISensor<Moisture>>();
         
-        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000));
-        
         sensorService.Register(moistureSensorMock.Object);
         sensorService.Register(mockBrightnessSensor.Object);
         moistureBehaviourMockFactory.Setup(factory => factory.Create(It.IsAny<PlantType>())).Returns(moistureBehaviourMock.Object);
 
         var plant = new Plant(sensorService, moistureBehaviourMockFactory.Object,
-            brightnessBehaviourMockFactory.Object, predictionService);
+            brightnessBehaviourMockFactory.Object);
 
         var moodInterpreterMock = new Mock<IMoodInterpreter>();
         var personalityMock = new Mock<IPersonality>();
