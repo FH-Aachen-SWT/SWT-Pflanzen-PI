@@ -3,18 +3,18 @@
 /// <summary>
 /// Sensordata describing the Brightness from 0 to 100 percent
 /// </summary>
-public class Brightness : SensorData<float>
+public class Brightness : SensorData<double>
 {
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="data"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public Brightness(float data) : base(data)
+    public Brightness(double data) : base(data)
     {
-        if (data < 0 || data > 100.0f)
+        if (data < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(data), "Muss zwischen 0 und 100 % liegen");
+            throw new ArgumentOutOfRangeException(nameof(data), "Muss grösser 0 sein!");
         }
     }
 }
