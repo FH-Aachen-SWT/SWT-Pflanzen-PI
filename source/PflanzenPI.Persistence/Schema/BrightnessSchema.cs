@@ -1,5 +1,5 @@
-﻿using System.Data;
-using Dapper;
+﻿using Dapper;
+using System.Data;
 
 namespace PflanzenPI.Persistence.Schema;
 
@@ -12,7 +12,7 @@ public class BrightnessSchema : ISchema
             case 3:
                 await connection.ExecuteAsync("""
                                               CREATE TABLE IF NOT EXISTS Brightness(
-                                                  owner TEXT NOT NULL REFERENCES Tamagotchi(name) ON DELETE CASCADE PRIMARY KEY,
+                                                  owner TEXT NOT NULL REFERENCES Tamagotchi(name) ON DELETE CASCADE ON UPDATE CASCADE PRIMARY KEY,
                                                   hour1 REAL NOT NULL,
                                                   hour2 REAL NOT NULL,
                                                   hour3 REAL NOT NULL,
@@ -46,9 +46,17 @@ public class BrightnessSchema : ISchema
         }
     }
 
-    public Task OnDowngradeAsync(IDbConnection connection, IDbTransaction transaction, int toVersion)
+    public async Task OnDowngradeAsync(IDbConnection connection, IDbTransaction transaction, int toVersion)
     {
-        return Task.CompletedTask;
+        switch (toVersion)
+        {
+            case 2:
+                await connection.ExecuteAsync("""
+                                         DROP TABLE Brightness
+                    """, transaction: transaction);
+                break;
+
+        }
     }
 
     public async Task OnInitializeAsync(IDbConnection connection, IDbTransaction transaction, int schemaVersion)
