@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:PflanzenPi.UI.Viewmodel"
         x:DataType="vm:MainViewModel"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
-        Height="480" Width="320"  
+        Height="480" Width="320"
         MaxHeight="480" MaxWidth="320"
         x:Class="PflanzenPi.UI.View.MainWindow"
         Title="PflanzenPi">
@@ -23,82 +23,43 @@
           PointerPressed="RootGrid_OnPointerPressed">
         <!-- Hintergrund Grid -->
         <Grid RowDefinitions="70*, 1.75*, 25.75*">
-            <Border Grid.Row="0" Background="{StaticResource HintergrundWand}"/>
-            <Border Grid.Row="1" Background="{StaticResource Strich}"/>
-            <Border Grid.Row="2" Background="{StaticResource Boden}"/>
+            <Border Grid.Row="0" Background="{StaticResource HintergrundWand}" />
+            <Border Grid.Row="1" Background="{StaticResource Strich}" />
+            <Border Grid.Row="2" Background="{StaticResource Boden}" />
         </Grid>
         <!-- Moisture Images -->
-        <Grid x:Name="MoistureImages" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0,80,0,0" PointerPressed="MoistureImages_OnPointerPressed">
+        <Grid x:Name="MoistureImages" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,80,0,0"
+              PointerPressed="MoistureImages_OnPointerPressed">
             <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentMoistureImages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Margin="1" Source="{Binding}" Width="30" Height="30"/>
+                        <Image Margin="1" Source="{Binding}" Width="30" Height="30" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
-        
+
         <!-- Popup for Moisture Behaviours -->
         <Popup x:Name="MoistureBehaviourPopup"
                PlacementTarget="{Binding #MoistureImages}"
-               Placement="Right" IsLightDismissEnabled="True"
-        >
+               Placement="Right" IsLightDismissEnabled="True">
             <Border Background="Transparent"
                     CornerRadius="8">
 
                 <ComboBox x:Name="PlantTypeComboBox" Width="150"
                           ItemsSource="{Binding AllPlantTypes}"
                           SelectedItem="{Binding Tamagotchi.CurrentPlantType}">
-                   <Interaction.Behaviors>
-                       <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #PlantTypeComboBox}">
-                           <InvokeCommandAction Command="{Binding Tamagotchi.PlantTypeChangedCommand}" CommandParameter="{Binding #PlantTypeComboBox.SelectedItem}"></InvokeCommandAction>
-                       </EventTriggerBehavior>
-                   </Interaction.Behaviors>
-                </ComboBox>
-
-            </Border>
-        </Popup>
-        
-        <!-- Brightness Images -->
-        <Grid x:Name="BrightnessImages" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,80,0,0" PointerPressed="BrightnessImages_OnPointerPressed">
-            <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentBrightnessImages}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Image Margin="1" Source="{Binding}" Width="30" Height="30"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
-        
-        <!-- Popup for brightness behaviours-->
-        <Popup x:Name="BrightnessBehavioursPopup"
-               PlacementTarget="{Binding #BrightnessImages}"
-               Placement="Left" IsLightDismissEnabled="True"
-        >
-            <Border Background="Transparent"
-                    CornerRadius="8">
-
-                <ComboBox x:Name="BrightnessTypeComboBox" 
-                        Width="150"
-                          ItemsSource="{Binding AllBrightnessTypes}"
-                          SelectedItem="{Binding Tamagotchi.CurrentBrightnessType}">
-                          
                     <Interaction.Behaviors>
-                        <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #BrightnessTypeComboBox}">
-                            <InvokeCommandAction Command="{Binding Tamagotchi.BrightnessTypeChangedCommand}" 
-                                                 CommandParameter="{Binding #BrightnessTypeComboBox.SelectedItem}"></InvokeCommandAction>
+                        <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #PlantTypeComboBox}">
+                            <InvokeCommandAction Command="{Binding Tamagotchi.PlantTypeChangedCommand}"
+                                                 CommandParameter="{Binding #PlantTypeComboBox.SelectedItem}">
+                            </InvokeCommandAction>
                         </EventTriggerBehavior>
                     </Interaction.Behaviors>
                 </ComboBox>
@@ -106,17 +67,60 @@
             </Border>
         </Popup>
 
-        
+        <!-- Brightness Images -->
+        <Grid x:Name="BrightnessImages" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,80,0,0"
+              PointerPressed="BrightnessImages_OnPointerPressed">
+            <ItemsControl Grid.Row="0" Margin="10" ItemsSource="{Binding Tamagotchi.CurrentBrightnessImages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Margin="1" Source="{Binding}" Width="30" Height="30" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <!-- Popup for brightness behaviours-->
+        <Popup x:Name="BrightnessBehavioursPopup"
+               PlacementTarget="{Binding #BrightnessImages}"
+               Placement="Left" IsLightDismissEnabled="True">
+            <Border Background="Transparent"
+                    CornerRadius="8">
+
+                <ComboBox x:Name="BrightnessTypeComboBox"
+                          Width="150"
+                          ItemsSource="{Binding AllBrightnessTypes}"
+                          SelectedItem="{Binding Tamagotchi.CurrentBrightnessType}">
+
+                    <Interaction.Behaviors>
+                        <EventTriggerBehavior EventName="SelectionChanged"
+                                              SourceObject="{Binding #BrightnessTypeComboBox}">
+                            <InvokeCommandAction Command="{Binding Tamagotchi.BrightnessTypeChangedCommand}"
+                                                 CommandParameter="{Binding #BrightnessTypeComboBox.SelectedItem}">
+                            </InvokeCommandAction>
+                        </EventTriggerBehavior>
+                    </Interaction.Behaviors>
+                </ComboBox>
+
+            </Border>
+        </Popup>
+
+
         <!-- Name und Pflanzi-->
         <Grid Width="320" Height="480" RowSpacing="80" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/> 
-                <RowDefinition Height="Auto"/>           
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
+
             <!-- Border oben -->
             <Border Grid.Row="0"
-                    Background="{StaticResource Boden}" 
+                    Background="{StaticResource Boden}"
                     BorderBrush="{StaticResource Strich}"
                     BorderThickness="9"
                     CornerRadius="1"
@@ -136,70 +140,72 @@
                          FontSize="20">
                     <Interaction.Behaviors>
                         <EventTriggerBehavior EventName="LostFocus" SourceObject="{Binding #NameTextBox}">
-                            <InvokeCommandAction Command="{Binding Tamagotchi.NameChangedCommand}" 
-                                                 CommandParameter="{Binding #NameTextBox.Text}"></InvokeCommandAction>
+                            <InvokeCommandAction Command="{Binding Tamagotchi.NameChangedCommand}"
+                                                 CommandParameter="{Binding #NameTextBox.Text}">
+                            </InvokeCommandAction>
                         </EventTriggerBehavior>
                     </Interaction.Behaviors>
                 </TextBox>
             </Border>
-            
+
             <!-- Image -->
-            <Image x:Name="PlantImage" 
+            <Image x:Name="PlantImage"
                    PointerPressed="PlantImage_OnPointerPressed"
                    Grid.Row="1"
                    anim:ImageBehavior.AnimatedSource="{Binding Tamagotchi.CurrentMoodImage}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Stretch="None"
-                   Margin="0,0,0,0"/>
+                   Margin="0,0,0,0" />
         </Grid>
-        
+
         <!-- Popup for personalities-->
         <Popup x:Name="PersonalitiesPopup"
                PlacementTarget="{Binding #PlantImage}"
-               Placement="Center" IsLightDismissEnabled="True"
-        >
+               Placement="Center" IsLightDismissEnabled="True">
             <Border Background="Transparent"
                     CornerRadius="8">
-        
-                <ComboBox x:Name="PersonalityTypeComboBox" 
+
+                <ComboBox x:Name="PersonalityTypeComboBox"
                           Width="150"
                           ItemsSource="{Binding AllPersonalityTypes}"
                           SelectedItem="{Binding Tamagotchi.CurrentPersonalityType}">
-                                  
+
                     <Interaction.Behaviors>
-                        <EventTriggerBehavior EventName="SelectionChanged" SourceObject="{Binding #PersonalityTypeComboBox}">
-                            <InvokeCommandAction Command="{Binding Tamagotchi.PersonalityTypeChangedCommand}" 
-                                                 CommandParameter="{Binding #PersonalityTypeComboBox.SelectedItem}"></InvokeCommandAction>
+                        <EventTriggerBehavior EventName="SelectionChanged"
+                                              SourceObject="{Binding #PersonalityTypeComboBox}">
+                            <InvokeCommandAction Command="{Binding Tamagotchi.PersonalityTypeChangedCommand}"
+                                                 CommandParameter="{Binding #PersonalityTypeComboBox.SelectedItem}">
+                            </InvokeCommandAction>
                         </EventTriggerBehavior>
                     </Interaction.Behaviors>
                 </ComboBox>
-        
+
             </Border>
         </Popup>
-        
+
         <!-- Next Watering -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     Margin="5">
 
-            <Image Width="48" Height="28" Source="../Assets/can.png" Margin="0,0,8,0"/>
-            <TextBlock Text="{Binding Tamagotchi.HoursUntilWateringPrediction, StringFormat='{}{0} h'}"  
-                       FontFamily="{StaticResource PixelFont}"
-                       VerticalAlignment="Bottom"/>
+            <Image Width="48" Height="28" Source="../Assets/can.png" Margin="0,0,8,0" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Tamagotchi.HoursUntilWateringPrediction, StringFormat='{}{0} h'}"
+                       FontFamily="{StaticResource PixelFont}" VerticalAlignment="Center" Margin="0,0,0,-5"/>
         </StackPanel>
-        
+
         <!-- Streak -->
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Margin="5">
-            
-            <TextBlock Text="{Binding Tamagotchi.TodaysStreak}"   
+
+            <TextBlock Text="{Binding Tamagotchi.TodaysStreak}"
                        FontFamily="{StaticResource PixelFont}"
-                       VerticalAlignment="Bottom"/>
-            <Image Width="28" Height="28" Source="{Binding Tamagotchi.CurrentHeartImage}" Margin="8,0,0,0"/>
+                       VerticalAlignment="Center"  Margin="0,0,0,-5"/>
+            <Image Width="28" Height="28" Source="{Binding Tamagotchi.CurrentHeartImage}" Margin="8,0,0,0"
+                   VerticalAlignment="Center" />
         </StackPanel>
     </Grid>
 </Window>
