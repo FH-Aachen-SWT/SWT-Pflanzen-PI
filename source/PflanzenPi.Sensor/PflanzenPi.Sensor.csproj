@@ -14,6 +14,9 @@
       <_Parameter1>PflanzenPi.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PflanzenPI.Persistence\PflanzenPI.Persistence.csproj" />
+  </ItemGroup>
 
 
 </Project>

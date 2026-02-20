@@ -9,6 +9,7 @@ using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
+using PflanzenPi.Plants.DBAdapter;
 using PflanzenPi.Plants.PredictionModel;
 using PflanzenPi.Plants.Types;
 using PflanzenPi.Sensor;
@@ -62,6 +63,8 @@ public class TamagotchiTest
         var brightnessStatus = BrightnessStatus.Satisfied;
         var mood = Mood.Happy;
         var moodImageName = "satisfied.gif";
+
+        var enumMapper = new EnumMapper();
         
         // Antworten für OnMoistureStatusChanged
         moodInterpreterMock.Setup(s => s.Interpret(moistureStatus, brightnessStatus)).Returns(mood);
@@ -73,7 +76,7 @@ public class TamagotchiTest
             .Returns(["sun.png", "sun.png", "sun.png"]);
 
         var tamagotchi = () => new Tamagotchi(plant, moodInterpreterMock.Object, personalityMock.Object,
-            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object, streakMock.Object, streakBatchMock.Object, personalityFactoryMock.Object);
+            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object, streakMock.Object, streakBatchMock.Object, personalityFactoryMock.Object, enumMapper);
 
         tamagotchi.Should().NotThrow();
     }

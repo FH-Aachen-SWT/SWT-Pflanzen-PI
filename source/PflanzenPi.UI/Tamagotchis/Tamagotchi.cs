@@ -12,6 +12,7 @@ using PflanzenPI.Persistence.Business.Errors;
 using PflanzenPI.Persistence.Database;
 using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
+using PflanzenPi.Plants.DBAdapter;
 using PflanzenPi.Plants.Types;
 using PflanzenPi.UI.Tamagotchis.Moods;
 using PflanzenPi.UI.Tamagotchis.Personalities;
@@ -65,6 +66,7 @@ public partial class Tamagotchi : ObservableObject
     private readonly IBrightnessImagesProvider _brightnessImagesProvider;
     private readonly ITamagotchiRepository _tamagotchiRepository;
     private readonly Dictionary<string, Bitmap> _cachedBitmaps = [];
+    private readonly IEnumMapper _enumMapper;
     
     private IPersonality _personality;
     private readonly IStreakService _streakService;
@@ -78,8 +80,9 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="personality">personality</param>
     /// <param name="moistureImagesProvider">moistureImagesProvider</param>
     public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality,
-        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IStreakService streakService, IStreakBatch streakBatch,  IPersonalityFactory personalityFactory)
+        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IStreakService streakService, IStreakBatch streakBatch,  IPersonalityFactory personalityFactory, IEnumMapper enumMapper)
     {
+        _enumMapper = enumMapper;
         _streakBatch = streakBatch;
         _streakService = streakService;
         _tamagotchiRepository = tamagotchiRepository;
@@ -102,8 +105,8 @@ public partial class Tamagotchi : ObservableObject
             Console.WriteLine("Tamagotchi Name is null");
             throw new ArgumentNullException(Name);
         }
-        CurrentPlantType = await _tamagotchiRepository.GetPlantTypeAsync(Name);
-        CurrentBrightnessType = await _tamagotchiRepository.GetBrightnessTypeAsync(Name);
+        CurrentPlantType = _enumMapper.map(await _tamagotchiRepository.GetPlantTypeAsync(Name));
+        CurrentBrightnessType = _enumMapper.map(await _tamagotchiRepository.GetBrightnessTypeAsync(Name));
         _plant.ChangeMoistureBehaviour(CurrentPlantType);
         _plant.ChangeBrightnessBehaviour(CurrentBrightnessType);
 
@@ -119,7 +122,7 @@ public partial class Tamagotchi : ObservableObject
     private async Task OnPlantTypeChanged(PlantType plantType)
     {
         _plant.ChangeMoistureBehaviour(plantType);
-        await _tamagotchiRepository.UpdatePlantTypeAsync(plantType);
+        await _tamagotchiRepository.UpdatePlantTypeAsync(_enumMapper.map(plantType));
     }
 
     
@@ -130,7 +133,7 @@ public partial class Tamagotchi : ObservableObject
     private async Task OnBrightnessTypeChanged(BrightnessType brightnessType)
     {
         _plant.ChangeBrightnessBehaviour(brightnessType);
-        await _tamagotchiRepository.UpdateBrightnessTypeAsync(brightnessType);
+        await _tamagotchiRepository.UpdateBrightnessTypeAsync(_enumMapper.map(brightnessType));
     }
 
     /// <summary>
@@ -141,7 +144,7 @@ public partial class Tamagotchi : ObservableObject
     {
         _personality = _personalityFactory.Create(personalityType);
         _plant.ForceUpdate();
-        await _tamagotchiRepository.UpdatePersonalityType(personalityType);
+        await _tamagotchiRepository.UpdatePersonalityType(_enumMapper.map(personalityType));
     }
 
     /// <summary>

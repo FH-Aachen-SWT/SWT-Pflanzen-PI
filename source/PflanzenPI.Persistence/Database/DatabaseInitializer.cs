@@ -12,7 +12,8 @@ public static class DatabaseInitializer
     private static readonly ISchema[] _tables =
     [
         new TamagotchiSchema(),
-        new StreakSchema()
+        new StreakSchema(),
+        new BrightnessSchema()
     ];
 
     /// <summary>

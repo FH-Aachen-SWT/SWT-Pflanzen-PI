@@ -5,6 +5,7 @@ using PflanzenPI.Persistence.Repository;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
+using PflanzenPi.Plants.DBAdapter;
 using PflanzenPi.Plants.PredictionModel;
 using PflanzenPi.Sensor.Sensors;
 using PflanzenPi.Sensor.Sensors.Mocks;
@@ -25,15 +26,24 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<IStreakService, StreakService>();
         collection.AddSingleton<IStreakBatch, StreakBatch>();
         
+        // Brightness
+        IBrightnessRepository brightnessRepo = new BrightnessRepository();
+        collection.AddSingleton<IBrightnessRepository>(brightnessRepo);
+        IBrightnessService service = new BrightnessService(brightnessRepo);
+        collection.AddSingleton<IBrightnessService>(service);
+        
         //Repository
         collection.AddSingleton<ITamagotchiRepository, TamagotchiRepository>();
+        
+        // Mapping to and from DB
+        collection.AddSingleton<IEnumMapper, EnumMapper>();
         
         // Sensor
         TimeSpan pollingRate = TimeSpan.FromMilliseconds(1000);
         ISensor<Moisture> moistureSensor = new MockMoistureSensorSine(40, pollingRate);
-        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate);
+        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate, service);
         // ISensor<Moisture> sensor = new MoistureSensor(pollingRate); //REAL SENSOR
-        // ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate); //REAL SENSOR
+        // ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate, service); //REAL SENSOR
         collection.AddSingleton<ISensor<Moisture>>(moistureSensor);
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
         
