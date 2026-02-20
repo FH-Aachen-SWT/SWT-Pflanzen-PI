@@ -31,19 +31,20 @@ public static class DatabaseInitializer
 
         try
         {
-            int oldVersion = await GetOrCreateSchemaVersionAsync(connection, transaction);
+            int? oldVersion = await GetOrCreateSchemaVersionAsync(connection, transaction);
+            bool freshCreate = oldVersion is null;
 
             Console.WriteLine($"Old Version: {oldVersion}, Target Version: {toStartVersion}");
 
             // ---- MIGRATION / DOWNGRADE ----
-            if (oldVersion < toStartVersion || (toStartVersion == 0 && oldVersion == 0))
+            if (oldVersion < toStartVersion || freshCreate)
             {
                 await MigrateAsync(connection, transaction, oldVersion, toStartVersion);
                 await UpdateSchemaVersionAsync(connection, transaction, toStartVersion, true);
             }
             else if (oldVersion > toStartVersion)
             {
-                await DowngradeAsync(connection, transaction, oldVersion, toStartVersion);
+                await DowngradeAsync(connection, transaction, oldVersion.Value, toStartVersion);
                 await UpdateSchemaVersionAsync(connection, transaction, toStartVersion, false);
             }
 
@@ -77,9 +78,9 @@ public static class DatabaseInitializer
         }
     }
 
-    private static async Task MigrateAsync(IDbConnection connection, IDbTransaction transaction, int fromVersion, int toVersion)
+    private static async Task MigrateAsync(IDbConnection connection, IDbTransaction transaction, int? fromVersion, int toVersion)
     {
-        if (fromVersion == 0 && toVersion == 0)
+        if (fromVersion is null)
         {
             //Create
             foreach (var table in _tables)
@@ -87,10 +88,13 @@ public static class DatabaseInitializer
                 await table.OnMigrateAsync(connection, transaction, 0);
             }
 
-            return;
+            if (toVersion == 0)
+            {
+                return;
+            }
         }
 
-        for (int currentVersion = fromVersion + 1; currentVersion <= toVersion; currentVersion++)
+        for (int currentVersion = fromVersion is not null ? fromVersion.Value + 1 : 1; currentVersion <= toVersion; currentVersion++)
         {
             //Create
             foreach (var table in _tables)
@@ -100,20 +104,23 @@ public static class DatabaseInitializer
         }
     }
 
-    private static async Task InitializeAsync(IDbConnection connection, IDbTransaction transaction, int fromVersion, int toVersion)
+    private static async Task InitializeAsync(IDbConnection connection, IDbTransaction transaction, int? fromVersion, int toVersion)
     {
-        if (fromVersion == 0 && toVersion == 0)
+        if (fromVersion is null)
         {
             foreach (var table in _tables)
             {
                 await table.OnInitializeAsync(connection, transaction, 0);
             }
 
-            return;
+            if (toVersion == 0)
+            {
+                return;
+            }
         }
 
 
-        for (int currentVersion = fromVersion + 1; currentVersion <= toVersion; currentVersion++)
+        for (int currentVersion = fromVersion is not null ? fromVersion.Value + 1 : 1; currentVersion <= toVersion; currentVersion++)
         {
             foreach (var table in _tables)
             {
@@ -177,27 +184,24 @@ public static class DatabaseInitializer
     /// </summary>
     /// <param name="connection"></param>
     /// <returns></returns>
-    private static async Task<int> GetOrCreateSchemaVersionAsync(IDbConnection connection, IDbTransaction transaction)
+    private static async Task<int?> GetOrCreateSchemaVersionAsync(IDbConnection connection, IDbTransaction transaction)
     {
-        int schemaVersion = 0;
         if (!await SchemaVersionTableExistsAsync(connection))
         {
-            await schemaVersionSchema.OnMigrateAsync(connection, transaction, schemaVersion);
-            await schemaVersionSchema.OnInitializeAsync(connection, transaction, schemaVersion);
+            await schemaVersionSchema.OnMigrateAsync(connection, transaction, 0);
+            await schemaVersionSchema.OnInitializeAsync(connection, transaction, 0);
             Console.WriteLine("Created schema version table");
+            return null;
         }
-        else
-        {
-            var version = await connection.QuerySingleOrDefaultAsync<int?>("""
-                                                                        SELECT versionNr
-                                                                        FROM SchemaVersion
-                                                                        ORDER BY versionNr DESC
-                                                                    LIMIT 1;
-                                                                    """, transaction: transaction);
+        var version = await connection.QuerySingleOrDefaultAsync<int?>("""
+                                                                    SELECT versionNr
+                                                                    FROM SchemaVersion
+                                                                    ORDER BY versionNr DESC
+                                                                LIMIT 1;
+                                                                """, transaction: transaction);
 
-            schemaVersion = version ?? 0;
-        }
-        return schemaVersion;
+        return version;
+
     }
 
     /// <summary>
