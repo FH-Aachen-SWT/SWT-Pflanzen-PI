@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using PflanzenPI.Persistence.Database;
-using PflanzenPi.Plants;
-using PflanzenPi.Plants.Types;
+using PflanzenPI.Persistence.Schema.Model;
 
 namespace PflanzenPI.Persistence.Repository;
 
@@ -10,19 +9,19 @@ namespace PflanzenPI.Persistence.Repository;
 /// </summary>
 public class TamagotchiRepository : ITamagotchiRepository
 {
-    public async Task<PlantType> GetPlantTypeAsync(string name)
+    public async Task<PlantTypeDB> GetPlantTypeAsync(string name)
     {
         await using var connection = await DatabaseConnectionFactory.Create();
         
-        var plantType = await connection.QuerySingleOrDefaultAsync<PlantType?>("""
+        var plantType = await connection.QuerySingleOrDefaultAsync<PlantTypeDB?>("""
                                                SELECT plantType
                                                FROM Tamagotchi 
                                                WHERE name = @Name
                                                """, new { Name = name });
-        return plantType ?? PlantType.MediumWater;
+        return plantType ?? PlantTypeDB.MediumWater;
     }
 
-    public async Task UpdatePlantTypeAsync(PlantType plantType)
+    public async Task UpdatePlantTypeAsync(PlantTypeDB plantType)
     {
         await using var connection =  await DatabaseConnectionFactory.Create();
         await connection.ExecuteScalarAsync("""
@@ -32,7 +31,7 @@ public class TamagotchiRepository : ITamagotchiRepository
                                             """, new { PlantType = plantType });
     }
 
-    public async Task UpdateBrightnessTypeAsync(BrightnessType brightnessType)
+    public async Task UpdateBrightnessTypeAsync(BrightnessTypeDB brightnessType)
     {
         await using var connection =  await DatabaseConnectionFactory.Create();
         await connection.ExecuteScalarAsync("""
@@ -52,7 +51,7 @@ public class TamagotchiRepository : ITamagotchiRepository
                                             """, new { Name = newName });
     }
     
-    public async Task UpdatePersonalityType(PersonalityType personalityType)
+    public async Task UpdatePersonalityType(PersonalityTypeDB personalityType)
     {
         await using var connection = await DatabaseConnectionFactory.Create();
         await connection.ExecuteScalarAsync("""
@@ -62,15 +61,15 @@ public class TamagotchiRepository : ITamagotchiRepository
                                             """, new {PersonalityType = personalityType});
     }
 
-    public async Task<BrightnessType> GetBrightnessTypeAsync(string name)
+    public async Task<BrightnessTypeDB> GetBrightnessTypeAsync(string name)
     {
         await using var connection = await DatabaseConnectionFactory.Create();
-        var brightnessType = await connection.QuerySingleOrDefaultAsync<BrightnessType?>("""
+        var brightnessType = await connection.QuerySingleOrDefaultAsync<BrightnessTypeDB?>("""
                                                                                SELECT brightnessType 
                                                                                FROM Tamagotchi 
                                                                                WHERE name = @Name
                                                                                """, new { Name = name });
-        return brightnessType ?? BrightnessType.MediumLight;
+        return brightnessType ?? BrightnessTypeDB.MediumLight;
     }
 
     public async Task<string?> GetCurrentTamagotchiNameAsync()

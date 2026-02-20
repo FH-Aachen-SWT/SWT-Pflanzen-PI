@@ -6,21 +6,21 @@ public class LittleLight : IBrightnessBehaviour
 {
     public BrightnessStatus Interpret(Brightness brightness)
     {
-        if (brightness < 500)
+        if (brightness < 1)
         {
             return BrightnessStatus.VeryLow;
         }
 
-        if (brightness < 1500)
+        if (brightness < 2)
         {
             return BrightnessStatus.Low;
         }
 
-        if (brightness < 2500)
+        if (brightness < 6)
         {
             return BrightnessStatus.Satisfied;
         }
 
-        return brightness < 3000 ? BrightnessStatus.Medium : BrightnessStatus.High;
+        return brightness < 8 ? BrightnessStatus.Medium : BrightnessStatus.High;
     }
 }

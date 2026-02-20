@@ -6,21 +6,21 @@ public class MediumLight : IBrightnessBehaviour
 {
     public BrightnessStatus Interpret(Brightness brightness)
     {
-        if (brightness < 5000)
+        if (brightness < 4)
         {
             return BrightnessStatus.VeryLow;
         }
 
-        if (brightness < 20000)
+        if (brightness < 6)
         {
             return BrightnessStatus.Low;
         }
 
-        if (brightness < 45000)
+        if (brightness < 10)
         {
             return BrightnessStatus.Satisfied;
         }
 
-        return brightness < 55000 ? BrightnessStatus.Medium : BrightnessStatus.High;
+        return brightness < 14 ? BrightnessStatus.Medium : BrightnessStatus.High;
     }
 }

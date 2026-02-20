@@ -1,4 +1,6 @@
-﻿namespace PflanzenPi.Sensor.Sensors.Mocks;
+﻿using PflanzenPI.Persistence.Business;
+
+namespace PflanzenPi.Sensor.Sensors.Mocks;
 
 public class MockBrightnessSensorSine : Sensor<Brightness>
 {
@@ -10,12 +12,19 @@ public class MockBrightnessSensorSine : Sensor<Brightness>
 
     private readonly float _middle;
 
+    private readonly IBrightnessService _service;
+
+    private int currentHour = 1;
+    private double currentLuxSum = 0;
+    private int currentNumOfReadings = 0;
+    
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="perfectBrightnessLevel">Middle brightness level wanted for simulation</param>
-    public MockBrightnessSensorSine(int perfectBrightnessLevel, TimeSpan interval)
+    public MockBrightnessSensorSine(int perfectBrightnessLevel, TimeSpan interval, IBrightnessService service)
     {
+        _service = service;
         _middle = (float) perfectBrightnessLevel / 10000;
         _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), interval);
     }
@@ -24,11 +33,29 @@ public class MockBrightnessSensorSine : Sensor<Brightness>
     /// Simulate read with sine function
     /// </summary>
     /// <param name="_"></param>
-    private void SimuliereLesen(object? _)
+    private async void SimuliereLesen(object? _)
     {
         getNextPos();
-        var brightness = (float) (3*Math.Sin(pos) + _middle) * 10000;
-        Publish(new Brightness(brightness));
+        var brightnessRaw = (float) (3*Math.Sin(pos) + _middle) * 10000;
+        var now = DateTime.Now;
+        if (now.Hour == currentHour)
+        {
+            currentHour++;
+            currentLuxSum = 0;
+            currentNumOfReadings = 0;
+        }
+
+        currentLuxSum += brightnessRaw;
+        currentNumOfReadings++;
+
+        var avgForHour = currentLuxSum / currentNumOfReadings;
+        await _service.SetBrightnessForHourAsync(currentHour, avgForHour);
+
+        var newDil = await _service.GetDLIAsync();
+        
+        Brightness brightness = new Brightness(newDil);
+        Console.WriteLine($"New DLI: {newDil}");
+        Publish(brightness);
     }
 
     /// <summary>

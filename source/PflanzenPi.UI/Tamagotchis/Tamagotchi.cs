@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
+﻿using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PflanzenPi.Plants;
+using PflanzenPi.Plants.Extensions;
+using PflanzenPi.Plants.Types;
+using PflanzenPi.UI.Extensions;
+using PflanzenPi.UI.Tamagotchis.Moods;
+using PflanzenPi.UI.Tamagotchis.Personalities;
+using PflanzenPi.UI.Tamagotchis.States;
 using PflanzenPI.Persistence.Business;
 using PflanzenPI.Persistence.Business.Errors;
 using PflanzenPI.Persistence.Database;
 using PflanzenPI.Persistence.Repository;
-using PflanzenPi.Plants;
-using PflanzenPi.Plants.Types;
-using PflanzenPi.UI.Tamagotchis.Moods;
-using PflanzenPi.UI.Tamagotchis.Personalities;
-using PflanzenPi.UI.Tamagotchis.States;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace PflanzenPi.UI.Tamagotchis;
 
@@ -25,21 +27,21 @@ namespace PflanzenPi.UI.Tamagotchis;
 public partial class Tamagotchi : ObservableObject
 {
     [ObservableProperty] private string? name;
-    
+
     [ObservableProperty] private PlantType currentPlantType;
-    
+
     [ObservableProperty] private BrightnessType currentBrightnessType;
 
     [ObservableProperty] private PersonalityType currentPersonalityType;
-    
+
     [ObservableProperty] private MoistureStatus currentMoistureStatus;
-    
+
     [ObservableProperty] private BrightnessStatus currentBrightnessStatus;
-    
+
     [ObservableProperty] private ObservableCollection<Bitmap> currentMoistureImages = new();
-    
+
     [ObservableProperty] private ObservableCollection<Bitmap> currentBrightnessImages = new();
-    
+
     [ObservableProperty] private string? currentMoodImage;
     
     [ObservableProperty] private int hoursUntilWateringPrediction;
@@ -62,7 +64,7 @@ public partial class Tamagotchi : ObservableObject
     public IAsyncRelayCommand<PersonalityType> PersonalityTypeChangedCommand =>
         new AsyncRelayCommand<PersonalityType>(OnPersonalityTypeChanged);
     public IAsyncRelayCommand<string> NameChangedCommand => new AsyncRelayCommand<string>(OnTamagotchiNameChanged);
-    
+
     private readonly IMoodInterpreter _moodInterpreter;
     private readonly IPersonalityFactory _personalityFactory;
     private readonly IMoistureImagesProvider _moistureImagesProvider;
@@ -70,7 +72,7 @@ public partial class Tamagotchi : ObservableObject
     private readonly IBrightnessImagesProvider _brightnessImagesProvider;
     private readonly ITamagotchiRepository _tamagotchiRepository;
     private readonly Dictionary<string, Bitmap> _cachedBitmaps = [];
-    
+
     private IPersonality _personality;
     private readonly IStreakService _streakService;
     private readonly IStreakBatch _streakBatch;
@@ -83,7 +85,7 @@ public partial class Tamagotchi : ObservableObject
     /// <param name="personality">personality</param>
     /// <param name="moistureImagesProvider">moistureImagesProvider</param>
     public Tamagotchi(Plant plant, IMoodInterpreter moodInterpreter, IPersonality personality,
-        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IStreakService streakService, IStreakBatch streakBatch,  IPersonalityFactory personalityFactory)
+        IMoistureImagesProvider moistureImagesProvider, IBrightnessImagesProvider brightnessImagesProvider, ITamagotchiRepository tamagotchiRepository, IStreakService streakService, IStreakBatch streakBatch, IPersonalityFactory personalityFactory)
     {
         _streakBatch = streakBatch;
         _streakService = streakService;
@@ -94,7 +96,7 @@ public partial class Tamagotchi : ObservableObject
         _personalityFactory = personalityFactory;
         _personality = personality;
         _moistureImagesProvider = moistureImagesProvider;
-        _brightnessImagesProvider  = brightnessImagesProvider;
+        _brightnessImagesProvider = brightnessImagesProvider;
         _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
         _plant.OnBrightnessStatusChanged += OnBrightnessStatusChanged;
         _plant.OnWateringPredictionChanged += OnWateringPredictionChanged;
@@ -113,8 +115,8 @@ public partial class Tamagotchi : ObservableObject
             Console.WriteLine("Tamagotchi Name is null");
             throw new ArgumentNullException(Name);
         }
-        CurrentPlantType = await _tamagotchiRepository.GetPlantTypeAsync(Name);
-        CurrentBrightnessType = await _tamagotchiRepository.GetBrightnessTypeAsync(Name);
+        CurrentPlantType = (await _tamagotchiRepository.GetPlantTypeAsync(Name)).Map();
+        CurrentBrightnessType = (await _tamagotchiRepository.GetBrightnessTypeAsync(Name)).Map();
         _plant.ChangeMoistureBehaviour(CurrentPlantType);
         _plant.ChangeBrightnessBehaviour(CurrentBrightnessType);
 
@@ -135,10 +137,10 @@ public partial class Tamagotchi : ObservableObject
     private async Task OnPlantTypeChanged(PlantType plantType)
     {
         _plant.ChangeMoistureBehaviour(plantType);
-        await _tamagotchiRepository.UpdatePlantTypeAsync(plantType);
+        await _tamagotchiRepository.UpdatePlantTypeAsync(plantType.Map());
     }
 
-    
+
     /// <summary>
     /// Change brightness behaviour when brightnessType changes in the UI
     /// </summary>
@@ -146,7 +148,7 @@ public partial class Tamagotchi : ObservableObject
     private async Task OnBrightnessTypeChanged(BrightnessType brightnessType)
     {
         _plant.ChangeBrightnessBehaviour(brightnessType);
-        await _tamagotchiRepository.UpdateBrightnessTypeAsync(brightnessType);
+        await _tamagotchiRepository.UpdateBrightnessTypeAsync(brightnessType.Map());
     }
 
     /// <summary>
@@ -157,7 +159,7 @@ public partial class Tamagotchi : ObservableObject
     {
         _personality = _personalityFactory.Create(personalityType);
         _plant.ForceUpdate();
-        await _tamagotchiRepository.UpdatePersonalityType(personalityType);
+        await _tamagotchiRepository.UpdatePersonalityType(personalityType.Map());
     }
 
     /// <summary>
@@ -256,7 +258,7 @@ public partial class Tamagotchi : ObservableObject
                     Console.WriteLine(todayAlreadyExists.Message);
                     break;
                 case StreakError.TodayDoesNotExist todayDoesNotExist: //Fatal
-                    throw new ArgumentException(todayDoesNotExist.Message); 
+                    throw new ArgumentException(todayDoesNotExist.Message);
             }
         }
         else

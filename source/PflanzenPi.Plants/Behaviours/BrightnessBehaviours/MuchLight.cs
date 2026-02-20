@@ -6,21 +6,21 @@ public class MuchLight : IBrightnessBehaviour
 {
     public BrightnessStatus Interpret(Brightness brightness)
     {
-        if (brightness < 50)
+        if (brightness < 10)
         {
             return BrightnessStatus.VeryLow;
         }
 
-        if (brightness < 55)
+        if (brightness < 14)
         {
             return BrightnessStatus.Low;
         }
 
-        if (brightness < 65)
+        if (brightness < 18)
         {
             return BrightnessStatus.Satisfied;
         }
 
-        return brightness < 70 ? BrightnessStatus.Medium : BrightnessStatus.High;
+        return brightness < 24 ? BrightnessStatus.Medium : BrightnessStatus.High;
     }
 }
