@@ -1,4 +1,5 @@
-﻿using PflanzenPi.Plants.Types;
+﻿using System;
+using PflanzenPi.Plants.Types;
 
 namespace PflanzenPi.UI.Tamagotchis.Personalities;
 
@@ -10,7 +11,8 @@ public class PersonalityFactory : IPersonalityFactory
         {
             PersonalityType.Happy => new HappyPersonality(),
             PersonalityType.Neutral => new NeutralPersonality(),
-            PersonalityType.Sad => new SadPersonality()
+            PersonalityType.Sad => new SadPersonality(),
+            _ => throw new ArgumentOutOfRangeException(nameof(personalityType), personalityType, null)
         };
     }
 }

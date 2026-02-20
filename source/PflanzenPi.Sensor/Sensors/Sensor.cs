@@ -18,5 +18,6 @@ public abstract class Sensor<TData> : ISensor<TData>
         var previous = Current;
         Current = data;
         OnDataChanged?.Invoke(previous, data);
+        Console.WriteLine(Current);
     }
 }

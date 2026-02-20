@@ -4,18 +4,22 @@ namespace PflanzenPi.Plants.PredictionModel;
 
 public class PredictionService : IPredictionService
 {
+    public event WateringPredictionChangedEvent? OnPredictionUpdated;
     private readonly TimeSpan _pollingRate;
     
     private int _samples = 0;
     private int _acceptedSamples = 0;
     private float _addedDifference = 0.0f;
     private float _lastMoisture = -1.0f;
+
+    private readonly int _predictEveryXSamples;
+    private readonly int _samplesUntilFirstPrediction;
     
-    private int _secondsUntilFirstPrediction = 600;
-    
-    public PredictionService(TimeSpan pollingRate)
+    public PredictionService(TimeSpan pollingRate, int samplesUntilFirstPrediction, int predictEveryXSamples)
     {
         _pollingRate = pollingRate;
+        _samplesUntilFirstPrediction = samplesUntilFirstPrediction;
+        _predictEveryXSamples = predictEveryXSamples;   
     }
 
     /// <summary>
@@ -38,7 +42,9 @@ public class PredictionService : IPredictionService
         }
         _lastMoisture = moisture;
     }
-    
+
+
+
     /// <summary>
     /// Predicts the time until the moisture level reaches a certain threshold
     /// </summary>
@@ -46,10 +52,15 @@ public class PredictionService : IPredictionService
     public TimeSpan? PredictTimeUntilThreshold(Moisture threshold)
     {
         float average = AverageDifference();
-        if (_samples >= _secondsUntilFirstPrediction / (float)_pollingRate.TotalSeconds && MathF.Abs(average) > 1e-6f) // returns first value after 10 min of being initialized
+        if (_samples >= _samplesUntilFirstPrediction &&  _samples % _predictEveryXSamples == 0 &&  MathF.Abs(average) > 1e-6f) // returns first value after _samplesUntilFirstPrediction is reached
         {
             float time = (threshold - _lastMoisture) / average * (float)_pollingRate.TotalSeconds;
-            return time > 0? TimeSpan.FromSeconds(time): null;
+            TimeSpan? newTime = time > 0 ? TimeSpan.FromSeconds(time) : null;
+            if (newTime.HasValue)
+            {
+                OnPredictionUpdated?.Invoke(newTime.Value);
+            }
+            return newTime;
         }
         return null;
     }

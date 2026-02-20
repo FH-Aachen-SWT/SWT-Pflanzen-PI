@@ -20,10 +20,7 @@ public record ValueResult<T, E>
     public ValueResult<T, U> MapError<U>(Func<E, U> mapper)
         where U : class, Error
     {
-        if (IsSuccess)
-            return ValueResult<T, U>.Success(Value);
-
-        return ValueResult<T, U>.Failure(mapper(Error!));
+        return IsSuccess ? ValueResult<T, U>.Success(Value!) : ValueResult<T, U>.Failure(mapper(Error!));
     }
 
 

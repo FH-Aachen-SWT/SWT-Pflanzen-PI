@@ -13,4 +13,10 @@ public interface IMoistureBehaviour
     /// <param name="moisture">Moisture</param>
     /// <returns>Moisture status depending on plant-type</returns>
     MoistureStatus Interpret(Moisture moisture);
+
+    /// <summary>
+    /// Gets the Moisture needed to reach the lowest MoistureState
+    /// </summary>
+    /// <returns></returns>
+    Moisture GetLowestMoistureThreashold();
 }

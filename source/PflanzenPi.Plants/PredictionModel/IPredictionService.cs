@@ -14,6 +14,11 @@ public interface IPredictionService
     public void AddSample(Moisture moisture);
 
     /// <summary>
+    /// Fires when a new prediction is available
+    /// </summary>
+    public event WateringPredictionChangedEvent? OnPredictionUpdated;
+
+    /// <summary>
     /// Predicts the remaining time until the specified moisture threshold is reached.
     /// Returns null when there are too few samples or no decreasing trend exists.
     /// </summary>

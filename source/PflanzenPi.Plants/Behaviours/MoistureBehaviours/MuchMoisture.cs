@@ -1,4 +1,5 @@
-﻿using PflanzenPi.Sensor.Sensors;
+﻿using Iot.Device.Gpio.Drivers;
+using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 
@@ -10,7 +11,7 @@ public class MuchMoisture : IMoistureBehaviour
     /// <inheritdoc/>
     public MoistureStatus Interpret(Moisture moisture)
     {
-        if (moisture < 50)
+        if (moisture < GetLowestMoistureThreashold())
         {
             return MoistureStatus.VeryDry;
         }
@@ -26,5 +27,10 @@ public class MuchMoisture : IMoistureBehaviour
         }
 
         return moisture < 70 ? MoistureStatus.Wet : MoistureStatus.VeryWet;
+    }
+
+    public Moisture GetLowestMoistureThreashold()
+    {
+        return 50;
     }
 }
