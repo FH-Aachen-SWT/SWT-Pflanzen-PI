@@ -1,10 +1,10 @@
-﻿namespace PflanzenPi.Sensor.Mocks;
+﻿namespace PflanzenPi.Sensor.Sensors.Mocks;
 
 public class MockBrightnessSensorSine : Sensor<Brightness>
 {
     private readonly Timer _timer;
 
-    private float pos;
+    private float pos = 4.79f; // Offset damit Brightness und Moisture nicht gleich sind beim mocken
 
     private readonly float _increment = 0.25f;
 
@@ -16,7 +16,7 @@ public class MockBrightnessSensorSine : Sensor<Brightness>
     /// <param name="perfectBrightnessLevel">Middle brightness level wanted for simulation</param>
     public MockBrightnessSensorSine(int perfectBrightnessLevel, TimeSpan interval)
     {
-        _middle = (float) perfectBrightnessLevel / 100;
+        _middle = (float) perfectBrightnessLevel / 10000;
         _timer = new Timer(SimuliereLesen, null, TimeSpan.FromSeconds(0), interval);
     }
     
@@ -27,9 +27,9 @@ public class MockBrightnessSensorSine : Sensor<Brightness>
     private void SimuliereLesen(object? _)
     {
         getNextPos();
-        var moisture = (float) (0.12*Math.Sin(pos) + _middle) * 100;
-        Publish(new Brightness(moisture));
-        Console.WriteLine($"MOCK READ BRIGHTNESS:  {moisture}");
+        var brightness = (float) (3*Math.Sin(pos) + _middle) * 10000;
+        Publish(new Brightness(brightness));
+        Console.WriteLine($"MOCK READ BRIGHTNESS:  {brightness}");
     }
 
     /// <summary>

@@ -15,8 +15,8 @@ public class NeutralPersonality : IPersonality
         return mood switch
         {
             Happy => "satisfied.gif",
-            Neutral => "drySad.gif",
-            Sad =>  "wetNeutral.gif",
+            Neutral => "wetNeutral.gif",
+            Sad =>  "drySad.gif",
             Angry => "dryWetAngry.gif",
             _ => throw new ArgumentOutOfRangeException(nameof(mood), mood, null)
         };

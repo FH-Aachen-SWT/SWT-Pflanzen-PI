@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PflanzenPi.Plants\PflanzenPi.Plants.csproj" />
     <ProjectReference Include="..\PflanzenPi.Sensor\PflanzenPi.Sensor.csproj" />
+    <ProjectReference Include="..\PflanzenPi.UI\PflanzenPi.UI.csproj" />
   </ItemGroup>
 
 </Project>

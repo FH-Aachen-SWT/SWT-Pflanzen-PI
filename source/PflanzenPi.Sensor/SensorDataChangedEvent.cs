@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Sensor;
+﻿namespace PflanzenPi.Sensor.Sensors;
 
 /// <summary>
 /// Sensor data changed event

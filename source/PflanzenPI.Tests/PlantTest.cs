@@ -3,7 +3,8 @@ using Moq;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
-using PflanzenPi.Sensor;
+using PflanzenPi.Plants.PredictionModel;
+using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPI.Tests;
 
@@ -23,13 +24,15 @@ public class PlantTest
         var moistureBehaviourMock = new Mock<IMoistureBehaviour>();
         var moistureSensorMock = new Mock<ISensor<Moisture>>();
         
+        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000));
+        
         sensorService.Register(moistureSensorMock.Object);
         sensorService.Register(mockBrightnessSensor.Object);
         moistureBehaviourMockFactory.Setup(factory => factory.Create(It.IsAny<PlantType>())).Returns(moistureBehaviourMock.Object);
         moistureBehaviourMock.Setup(s => s.Interpret(previous)).Returns(MoistureStatus.Dry);
         moistureBehaviourMock.Setup(s => s.Interpret(nexti)).Returns(MoistureStatus.Satisfied);
 
-        var plant = new Plant(sensorService, moistureBehaviourMockFactory.Object,  brightnessBehaviourMockFactory.Object);
+        var plant = new Plant(sensorService, moistureBehaviourMockFactory.Object,  brightnessBehaviourMockFactory.Object, predictionService);
         var eventRaised = false;
 
         plant.OnMoistureStatusChanged += (MoistureStatus) =>

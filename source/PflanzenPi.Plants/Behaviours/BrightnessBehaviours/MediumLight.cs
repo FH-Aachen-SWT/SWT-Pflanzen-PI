@@ -1,4 +1,4 @@
-﻿using PflanzenPi.Sensor;
+﻿using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 
@@ -6,22 +6,21 @@ public class MediumLight : IBrightnessBehaviour
 {
     public BrightnessStatus Interpret(Brightness brightness)
     {
-        //TODO Echte werte nehmen
-        if (brightness < 30)
+        if (brightness < 5000)
         {
             return BrightnessStatus.VeryLow;
         }
 
-        if (brightness < 35)
+        if (brightness < 20000)
         {
             return BrightnessStatus.Low;
         }
 
-        if (brightness < 45)
+        if (brightness < 45000)
         {
             return BrightnessStatus.Satisfied;
         }
 
-        return brightness < 50 ? BrightnessStatus.Medium : BrightnessStatus.High;
+        return brightness < 55000 ? BrightnessStatus.Medium : BrightnessStatus.High;
     }
 }

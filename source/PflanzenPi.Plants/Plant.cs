@@ -1,7 +1,8 @@
 using PflanzenPi.Plants.Behaviours;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
-using PflanzenPi.Sensor;
+using PflanzenPi.Plants.PredictionModel;
+using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.Plants;
 
@@ -19,6 +20,7 @@ public class Plant
     private readonly ISensor<Moisture>  _moistureSensor;
     private readonly ISensor<Brightness>  _brightnessSensor;
     private readonly SensorService _sensorService;
+    private readonly IPredictionService _predictionService;
 
     /// <summary>
     /// Constructor
@@ -26,8 +28,9 @@ public class Plant
     /// <param name="sensorService">Sensor service</param>
     /// <param name="moistureBehaviourFactory">Moisture behaviour factory to create a behaviour for the PlantType</param>
     /// <exception cref="ArgumentNullException">ArgumentNullException if moisture sensor is null</exception>
-    public Plant(SensorService sensorService, IMoistureBehaviourFactory moistureBehaviourFactory, IBrightnessBehaviourFactory brightnessBehaviourFactory)
+    public Plant(SensorService sensorService, IMoistureBehaviourFactory moistureBehaviourFactory, IBrightnessBehaviourFactory brightnessBehaviourFactory, IPredictionService predictionService)
     {
+        _predictionService = predictionService;
         _sensorService = sensorService;
         _moistureBehaviourFactory = moistureBehaviourFactory;
         _brightnessBehaviourFactory = brightnessBehaviourFactory;
@@ -53,7 +56,7 @@ public class Plant
             //Force Update when switching behaviour
             UpdateMoisture(null, _moistureSensor.Current);
         }
-        Console.WriteLine("MOISTURE BEHAVIOUR CHANGED: " + nameof(currentMoistureBehaviour));
+        Console.WriteLine("MOISTURE BEHAVIOUR CHANGED: " + plantType);
     }
     
     /// <summary>
@@ -68,7 +71,7 @@ public class Plant
             //Force Update when switching behaviour
             UpdateBrightness(null, _brightnessSensor.Current);
         }
-        Console.WriteLine("BRIGHTNESS BEHAVIOUR CHANGED: " + nameof(currentBrightnessBehaviour));
+        Console.WriteLine("BRIGHTNESS BEHAVIOUR CHANGED: " + brightnessType);
     }
 
     /// <summary>
@@ -80,6 +83,7 @@ public class Plant
     {
         MoistureStatus? prevStatus = null;
         MoistureStatus nextStatus;
+        _predictionService.AddSample(nextMoisture);
         if (prevMoisture is not null && prevMoisture != nextMoisture)
         {
             prevStatus = currentMoistureBehaviour.Interpret(prevMoisture);
@@ -104,5 +108,14 @@ public class Plant
         {
             OnBrightnessStatusChanged?.Invoke(nextStatus);
         }
+    }
+
+    /// <summary>
+    /// Predicts the time until the moisture level reaches a certain threshold
+    /// </summary>
+    /// <param name="threshold">Moisturelevel you want to calculate the time for</param>
+    public TimeSpan? PredictNextWatering(Moisture threshold)
+    {
+        return _predictionService.PredictTimeUntilThreshold(threshold);
     }
 }

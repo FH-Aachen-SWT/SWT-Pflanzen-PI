@@ -1,4 +1,4 @@
-﻿using PflanzenPi.Sensor;
+﻿using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 
