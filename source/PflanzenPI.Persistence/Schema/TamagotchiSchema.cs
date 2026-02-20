@@ -28,6 +28,12 @@ public class TamagotchiSchema : ISchema
                                                 WHERE isSelected = 1;
                                               """, transaction: transaction);
                 break;
+            case 1:
+                await connection.ExecuteAsync("""
+                                              ALTER TABLE Tamagotchi
+                                              ADD COLUMN personalityType INTEGER NOT NULL DEFAULT 0
+                                              """);
+                break;
             
         }
 
@@ -44,9 +50,16 @@ public class TamagotchiSchema : ISchema
         {
             case 0:
                 await connection.ExecuteAsync("""
-                                        INSERT INTO Tamagotchi(name, plantType, brightnessType, isSelected) VALUES ("Bob B.", 1, 1, 1);
+                                        INSERT INTO Tamagotchi(name, plantType, brightnessType, isSelected)
+                                        VALUES ("Bob B.", 1, 1, 1);
                                         """, transaction: transaction);
-                break;       
+                break;
+            case 1:
+                await connection.ExecuteAsync("""
+                                              UPDATE Tamagotchi
+                                              SET personalityType = 1
+                                              """, transaction: transaction);
+                break;
         }
     }
 }

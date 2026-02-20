@@ -1,4 +1,4 @@
-﻿namespace PflanzenPi.Plants;
+﻿namespace PflanzenPi.Plants.Types;
 
 public enum PlantType
 {

@@ -75,7 +75,18 @@ public static class DatabaseInitializer
     
     private static async Task Migrate(IDbConnection connection, IDbTransaction transaction, int fromVersion, int toVersion)
     {
-        for (int currentVersion = fromVersion; currentVersion <= toVersion; currentVersion++)
+        if (fromVersion == 0)
+        {
+            //Create
+            foreach (var table in _tables)
+            {
+                await table.OnMigrate(connection, transaction, 0);
+            }
+
+            return;
+        }
+        
+        for (int currentVersion = fromVersion + 1; currentVersion <= toVersion; currentVersion++)
         {
             //Create
             foreach (var table in _tables)

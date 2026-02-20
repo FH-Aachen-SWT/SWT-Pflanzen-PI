@@ -1,4 +1,6 @@
-﻿namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
+﻿using PflanzenPi.Plants.Types;
+
+namespace PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 
 /// <summary>
 /// Implementation of MoistureBehaviourFactory

@@ -2,6 +2,8 @@ using PflanzenPi.Plants.Behaviours;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
 using PflanzenPi.Plants.PredictionModel;
+using PflanzenPi.Plants.Types;
+using PflanzenPi.Sensor;
 using PflanzenPi.Sensor.Sensors;
 
 namespace PflanzenPi.Plants;
@@ -107,6 +109,22 @@ public class Plant
         if (prevStatus is null || (prevBrightness != null && prevBrightness == 0) || prevStatus != nextStatus)
         {
             OnBrightnessStatusChanged?.Invoke(nextStatus);
+        }
+    }
+
+    /// <summary>
+    /// Forces Update of UI
+    /// </summary>
+    public void ForceUpdate()
+    {
+        if (_brightnessSensor.Current is not null)
+        {
+            UpdateBrightness(null, _brightnessSensor.Current);
+        }
+
+        if (_moistureSensor.Current is not null)
+        {
+            UpdateMoisture(null, _moistureSensor.Current);
         }
     }
 
