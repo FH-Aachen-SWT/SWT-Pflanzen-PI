@@ -12,7 +12,7 @@
         x:Class="PflanzenPi.UI.View.MainWindow"
         Title="PflanzenPi">
     <Window.Resources>
-        <FontFamily x:Key="NameFont">avares://PflanzenPI.Ui/Styles/ari_w9500#Ari-W9500 Bold</FontFamily>
+        <FontFamily x:Key="PixelFont">avares://PflanzenPI.Ui/Styles/ari_w9500#Ari-W9500 Bold</FontFamily>
         <SolidColorBrush x:Key="HintergrundWand" Color="#cda07f"></SolidColorBrush>
         <SolidColorBrush x:Key="Boden" Color="#a04e1f"></SolidColorBrush>
         <SolidColorBrush x:Key="Strich" Color="#733512"></SolidColorBrush>
@@ -132,7 +132,7 @@
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          MaxLength="15"
-                         FontFamily="{StaticResource NameFont}"
+                         FontFamily="{StaticResource PixelFont}"
                          FontSize="20">
                     <Interaction.Behaviors>
                         <EventTriggerBehavior EventName="LostFocus" SourceObject="{Binding #NameTextBox}">
@@ -185,7 +185,8 @@
                     Margin="5">
 
             <Image Width="48" Height="28" Source="../Assets/can.png" Margin="0,0,8,0"/>
-            <TextBlock Text="2h"
+            <TextBlock Text="{Binding Tamagotchi.HoursUntilWateringPrediction, StringFormat='{}{0} h'}"  
+                       FontFamily="{StaticResource PixelFont}"
                        VerticalAlignment="Bottom"/>
         </StackPanel>
         
@@ -195,7 +196,8 @@
                     VerticalAlignment="Bottom"
                     Margin="5">
             
-            <TextBlock Text="{Binding Tamagotchi.TodaysStreak}"
+            <TextBlock Text="{Binding Tamagotchi.TodaysStreak}"   
+                       FontFamily="{StaticResource PixelFont}"
                        VerticalAlignment="Bottom"/>
             <Image Width="28" Height="28" Source="{Binding Tamagotchi.CurrentHeartImage}" Margin="8,0,0,0"/>
         </StackPanel>

@@ -38,4 +38,6 @@ public abstract class SensorData<T> where T : INumber<T>
     {
         return left.Data-right.Data;
     }
+
+    override public string ToString() => Data?.ToString() ?? "N/A";
 }

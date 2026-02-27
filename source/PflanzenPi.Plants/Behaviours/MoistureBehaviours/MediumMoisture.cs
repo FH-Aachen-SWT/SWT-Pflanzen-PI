@@ -11,7 +11,7 @@ public class MediumMoisture : IMoistureBehaviour
     /// <inheritdoc/>
     public MoistureStatus Interpret(Moisture moisture)
     {
-        if (moisture < 30)
+        if (moisture < GetLowestMoistureThreashold())
         {
             return MoistureStatus.VeryDry;
         }
@@ -27,5 +27,10 @@ public class MediumMoisture : IMoistureBehaviour
         }
 
         return moisture < 50 ? MoistureStatus.Wet : MoistureStatus.VeryWet;
+    }
+
+    public Moisture GetLowestMoistureThreashold()
+    {
+        return 30;
     }
 }

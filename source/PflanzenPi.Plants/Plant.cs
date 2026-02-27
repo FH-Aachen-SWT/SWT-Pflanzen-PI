@@ -13,6 +13,7 @@ namespace PflanzenPi.Plants;
 /// </summary>
 public class Plant
 {
+    public WateringPredictionChangedEvent? OnWateringPredictionChanged;
     public MoistureStatusChangedEvent? OnMoistureStatusChanged;
     public BrightnessStatusChangedEvent? OnBrightnessStatusChanged;
     private IMoistureBehaviour currentMoistureBehaviour;
@@ -33,6 +34,7 @@ public class Plant
     public Plant(SensorService sensorService, IMoistureBehaviourFactory moistureBehaviourFactory, IBrightnessBehaviourFactory brightnessBehaviourFactory, IPredictionService predictionService)
     {
         _predictionService = predictionService;
+        _predictionService.OnPredictionUpdated += (time) => OnWateringPredictionChanged?.Invoke(time);
         _sensorService = sensorService;
         _moistureBehaviourFactory = moistureBehaviourFactory;
         _brightnessBehaviourFactory = brightnessBehaviourFactory;
@@ -86,6 +88,7 @@ public class Plant
         MoistureStatus? prevStatus = null;
         MoistureStatus nextStatus;
         _predictionService.AddSample(nextMoisture);
+        _predictionService.PredictTimeUntilThreshold(currentMoistureBehaviour.GetLowestMoistureThreashold());
         if (prevMoisture is not null && prevMoisture != nextMoisture)
         {
             prevStatus = currentMoistureBehaviour.Interpret(prevMoisture);

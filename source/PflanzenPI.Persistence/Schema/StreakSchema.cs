@@ -15,7 +15,7 @@ public class StreakSchema : ISchema
                                                  date TEXT NOT NULL DEFAULT (CURRENT_DATE),
                                                  startGoal INTEGER NOT NULL,
                                                  endGoal INTEGER NOT NULL,
-                                                 owner TEXT NOT NULL REFERENCES Tamagotchi(name) ON DELETE CASCADE,  
+                                                 owner TEXT NOT NULL REFERENCES Tamagotchi(name) ON DELETE CASCADE ON UPDATE CASCADE,  
                                                  PRIMARY KEY(date, owner)
                                               )
                                               """, transaction: transaction);
