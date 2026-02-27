@@ -41,17 +41,20 @@ public partial class Tamagotchi : ObservableObject
     [ObservableProperty] private ObservableCollection<Bitmap> currentBrightnessImages = new();
     
     [ObservableProperty] private string? currentMoodImage;
+    
+    [ObservableProperty] private int hoursUntilWateringPrediction;
 
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentHeartImage))] private long? todaysStreak;
+    
+    /// <summary>
+    /// Cached value if the streak is already reached
+    /// </summary>
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentHeartImage))]  private bool streakReachedToday; 
 
     /// <summary>
     /// The heart to display, depending on TodaysStreak
     /// </summary>
     public Bitmap CurrentHeartImage => !StreakReachedToday ? GetBitmap("grayHeart.png") : GetBitmap("heart.png");
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentHeartImage))]
-    private bool streakReachedToday; //Cached value if the streak is already reached
 
     public IAsyncRelayCommand<PlantType> PlantTypeChangedCommand => new AsyncRelayCommand<PlantType>(OnPlantTypeChanged);
     public IAsyncRelayCommand<BrightnessType> BrightnessTypeChangedCommand => new AsyncRelayCommand<BrightnessType>(OnBrightnessTypeChanged);
@@ -94,6 +97,12 @@ public partial class Tamagotchi : ObservableObject
         _brightnessImagesProvider  = brightnessImagesProvider;
         _plant.OnMoistureStatusChanged += OnMoistureStatusChanged;
         _plant.OnBrightnessStatusChanged += OnBrightnessStatusChanged;
+        _plant.OnWateringPredictionChanged += OnWateringPredictionChanged;
+    }
+
+    private void OnWateringPredictionChanged(TimeSpan timeUntilWateringNeed)
+    {
+        HoursUntilWateringPrediction = (int)timeUntilWateringNeed.TotalHours;
     }
 
     private async Task InitializeTamagotchi()
@@ -112,7 +121,7 @@ public partial class Tamagotchi : ObservableObject
         await _streakBatch.StartScheduling(Name);
         TodaysStreak = await _streakService.GetTodaysStreakAsync(Name);
         var reachedResult = await _streakService.IsGoalReachedAsync(Name);
-        if (reachedResult.IsSuccess)
+        if (reachedResult.IsSuccess && reachedResult.Value.HasValue)
         {
             StreakReachedToday = true;
         }

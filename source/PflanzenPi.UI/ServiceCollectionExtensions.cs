@@ -29,8 +29,8 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<ITamagotchiRepository, TamagotchiRepository>();
         
         // Sensor
-        TimeSpan pollingRate = TimeSpan.FromMilliseconds(1000);
-        ISensor<Moisture> moistureSensor = new MockMoistureSensorSine(40, pollingRate);
+        TimeSpan pollingRate = TimeSpan.FromMilliseconds(10000);
+        ISensor<Moisture> moistureSensor = new MockMoistureSensorSlowDecline(pollingRate);
         ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate);
         // ISensor<Moisture> sensor = new MoistureSensor(pollingRate); //REAL SENSOR
         // ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate); //REAL SENSOR
@@ -45,7 +45,11 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
         
         // Prediction Service
-        IPredictionService predictionService = new PredictionService(pollingRate);
+        TimeSpan secondsUntilFirstPrediction = TimeSpan.FromSeconds(10);
+        int samplesUntilFirstPrediction =
+            (int)(secondsUntilFirstPrediction.TotalSeconds / pollingRate.TotalSeconds);
+        int predictEveryXSamples = 2;
+        IPredictionService predictionService = new PredictionService(pollingRate, samplesUntilFirstPrediction, predictEveryXSamples);
         collection.AddSingleton<IPredictionService>(predictionService);
         
         // Behaviours, Mood und Personality
