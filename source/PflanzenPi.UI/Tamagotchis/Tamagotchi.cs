@@ -47,8 +47,10 @@ public partial class Tamagotchi : ObservableObject
     /// <summary>
     /// The heart to display, depending on TodaysStreak
     /// </summary>
-    public Bitmap CurrentHeartImage => !streakReachedToday ? GetBitmap("grayHeart.png") : GetBitmap("heart.png");
+    public Bitmap CurrentHeartImage => !StreakReachedToday ? GetBitmap("grayHeart.png") : GetBitmap("heart.png");
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentHeartImage))]
     private bool streakReachedToday; //Cached value if the streak is already reached
 
     public IAsyncRelayCommand<PlantType> PlantTypeChangedCommand => new AsyncRelayCommand<PlantType>(OnPlantTypeChanged);
@@ -109,6 +111,11 @@ public partial class Tamagotchi : ObservableObject
 
         await _streakBatch.StartScheduling(Name);
         TodaysStreak = await _streakService.GetTodaysStreakAsync(Name);
+        var reachedResult = await _streakService.IsGoalReachedAsync(Name);
+        if (reachedResult.IsSuccess)
+        {
+            StreakReachedToday = true;
+        }
     }
     
 
@@ -213,9 +220,9 @@ public partial class Tamagotchi : ObservableObject
                 CurrentMoodImage = null;
             }
         });
-        if (!streakReachedToday && currentMood == Mood.Happy && DatabaseConnectionFactory.IsInitalized)
+        if (!StreakReachedToday && currentMood == Mood.Happy && DatabaseConnectionFactory.IsInitalized)
         {
-            streakReachedToday = true;
+            StreakReachedToday = true;
             Dispatcher.UIThread.InvokeAsync(UpdateStreakAsync);
         }
     }
