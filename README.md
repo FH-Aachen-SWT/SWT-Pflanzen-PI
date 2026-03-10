@@ -58,30 +58,25 @@ Diese visuelle Darstellung soll beim Nutzer eine emotionale Bindung erzeugen und
 
 ---
 
-## Aktueller Projektstand
+## Aktuelle Features
 
-- Repository ist angelegt
-- Grobe Projekt- und Architekturidee steht
-- Hardware ist definiert
-- Sensor-Modell ist ausgewählt
-- Softwarestruktur (u. a. Sensor-Interface) ist geplant
-
-⏳ **Noch offen / in Arbeit:**
-- Flashen des Raspberry Pi
-- Erste lauffähige C#-Anwendung auf dem Pi
-- Anbindung des Feuchtigkeitssensors
-- Anzeige der ersten statischen Pixelart-Zustände
+- Messung der Bodenfeuchtigkeit und Helligkeit an den Blättern
+- Interpretierung des Pflanzenzustandes basierend auf Wasser- und Lichtbedarf
+- Animierter Pflanzentamagotchi
+- Verschiedene benötigte Wasser- und Lichtmengen auswählbar
+- Glücklichkeitsstreak
+- Vorhersage wann die Pflanze das nächste mal gegossen werden muss
 
 ---
 
-## Geplante Erweiterungen
+## Mögliche Erweiterungen
 
-In späteren Projektphasen sind unter anderem vorgesehen:
+Dieses Projekt könnte noch weiter erweitert werden:
 
 - Weitere Sensoren:
-  - Lichtintensität
   - Temperatur
   - Bodenparameter
+  - Luftqualität
 - Erweiterte Zustandslogik (z. B. Langzeitpflege)
 - Weitere Darstellungszustände und Animationen
 - Optionale Audioausgabe („Mir ist zu trocken!“)
