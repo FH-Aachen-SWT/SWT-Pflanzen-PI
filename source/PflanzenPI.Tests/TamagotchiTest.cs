@@ -41,7 +41,7 @@ public class TamagotchiTest
         var moistureBehaviourMock = new Mock<IMoistureBehaviour>();
         var moistureSensorMock = new Mock<ISensor<Moisture>>();
         
-        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000));
+        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000), 10, 10);
         
         sensorService.Register(moistureSensorMock.Object);
         sensorService.Register(mockBrightnessSensor.Object);
@@ -76,7 +76,7 @@ public class TamagotchiTest
             .Returns(["sun.png", "sun.png", "sun.png"]);
 
         var tamagotchi = () => new Tamagotchi(plant, moodInterpreterMock.Object, personalityMock.Object,
-            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object, streakMock.Object, streakBatchMock.Object, personalityFactoryMock.Object, enumMapper);
+            moistureImagesProviderMock.Object, brightnessImagesProviderMock.Object, repoMock.Object, streakMock.Object, streakBatchMock.Object, personalityFactoryMock.Object);
 
         tamagotchi.Should().NotThrow();
     }

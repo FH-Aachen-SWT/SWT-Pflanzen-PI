@@ -7,8 +7,8 @@
         xmlns:vm="clr-namespace:PflanzenPi.UI.Viewmodel"
         x:DataType="vm:MainViewModel"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
-        Height="480" Width="320"
-        MaxHeight="480" MaxWidth="320"
+        Height="430" Width="320"
+        MaxHeight="430" MaxWidth="320"
         x:Class="PflanzenPi.UI.View.MainWindow"
         Title="PflanzenPi">
     <Window.Resources>
@@ -17,7 +17,7 @@
         <SolidColorBrush x:Key="Boden" Color="#a04e1f"></SolidColorBrush>
         <SolidColorBrush x:Key="Strich" Color="#733512"></SolidColorBrush>
     </Window.Resources>
-    <Grid Width="320" Height="480" x:Name="RootGrid"
+    <Grid Width="320" Height="430" x:Name="RootGrid"
           Focusable="True"
           Background="Transparent"
           PointerPressed="RootGrid_OnPointerPressed">

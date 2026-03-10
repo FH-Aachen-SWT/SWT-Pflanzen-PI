@@ -58,30 +58,25 @@ Diese visuelle Darstellung soll beim Nutzer eine emotionale Bindung erzeugen und
 
 ---
 
-## Aktueller Projektstand
+## Aktuelle Features
 
-- Repository ist angelegt
-- Grobe Projekt- und Architekturidee steht
-- Hardware ist definiert
-- Sensor-Modell ist ausgewählt
-- Softwarestruktur (u. a. Sensor-Interface) ist geplant
-
-⏳ **Noch offen / in Arbeit:**
-- Flashen des Raspberry Pi
-- Erste lauffähige C#-Anwendung auf dem Pi
-- Anbindung des Feuchtigkeitssensors
-- Anzeige der ersten statischen Pixelart-Zustände
+- Messung der Bodenfeuchtigkeit und Helligkeit an den Blättern
+- Interpretierung des Pflanzenzustandes basierend auf Wasser- und Lichtbedarf
+- Animierter Pflanzentamagotchi
+- Verschiedene benötigte Wasser- und Lichtmengen auswählbar
+- Glücklichkeitsstreak
+- Vorhersage wann die Pflanze das nächste mal gegossen werden muss
 
 ---
 
-## Geplante Erweiterungen
+## Mögliche Erweiterungen
 
-In späteren Projektphasen sind unter anderem vorgesehen:
+Dieses Projekt könnte noch weiter erweitert werden:
 
 - Weitere Sensoren:
-  - Lichtintensität
   - Temperatur
   - Bodenparameter
+  - Luftqualität
 - Erweiterte Zustandslogik (z. B. Langzeitpflege)
 - Weitere Darstellungszustände und Animationen
 - Optionale Audioausgabe („Mir ist zu trocken!“)
@@ -111,4 +106,6 @@ Dieses Projekt befindet sich in einer frühen Entwicklungsphase. Struktur, Archi
 
 ## Lizenz
 
-Noch nicht festgelegt.
+Diese Software ist ausschließliches Eigentum von Lina Bürkle, Sofia Voetmand, Stefan Genster, Lukas Beschorner, Julian Zell sowie dem Partnerunternehmen ARD ZDF Deutschlandradio Beitragsservice, und niemand sonst darf Eigentum oder Urheberschaft daran beanspruchen.
+Jegliche kommerzielle Nutzung sowie das Verbreiten, Kopieren oder Weitergeben der Software oder von Teilen davon ist ohne vorherige ausdrückliche Zustimmung der genannten Rechteinhaber untersagt.
+Jeder Verstoß gegen diese Bedingungen kann rechtliche Konsequenzen nach sich ziehen.

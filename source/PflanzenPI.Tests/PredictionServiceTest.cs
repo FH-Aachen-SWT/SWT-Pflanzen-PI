@@ -31,7 +31,7 @@ public class PredictionServiceTests
         var moistureSensorMock = new MockMoistureSensorSlowDecline(TimeSpan.FromMilliseconds(1000));
 
         IPredictionService predictionService =
-            new PredictionService(TimeSpan.FromMilliseconds(1000));
+            new PredictionService(TimeSpan.FromMilliseconds(1000), 10, 10);
 
         sensorService.Register(moistureSensorMock);
         sensorService.Register(mockBrightnessSensor.Object);
