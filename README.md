@@ -106,4 +106,6 @@ Dieses Projekt befindet sich in einer frühen Entwicklungsphase. Struktur, Archi
 
 ## Lizenz
 
-Noch nicht festgelegt.
+Diese Software ist ausschließliches Eigentum von Lina Bürkle, Sofia Voetmand, Stefan Genster, Lukas Beschorner, Julian Zell sowie dem Partnerunternehmen ARD ZDF Deutschlandradio Beitragsservice, und niemand sonst darf Eigentum oder Urheberschaft daran beanspruchen.
+Jegliche kommerzielle Nutzung sowie das Verbreiten, Kopieren oder Weitergeben der Software oder von Teilen davon ist ohne vorherige ausdrückliche Zustimmung der genannten Rechteinhaber untersagt.
+Jeder Verstoß gegen diese Bedingungen kann rechtliche Konsequenzen nach sich ziehen.
