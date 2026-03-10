@@ -37,10 +37,10 @@ public static class ServiceCollectionExtensions
 
         // Sensor
         TimeSpan pollingRate = TimeSpan.FromMilliseconds(10000);
-        ISensor<Moisture> moistureSensor = new MockMoistureSensorSlowDecline(pollingRate);
-        ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate, service);
-        // ISensor<Moisture> sensor = new MoistureSensor(pollingRate); //REAL SENSOR
-        // ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate, service); //REAL SENSOR
+        //ISensor<Moisture> moistureSensor = new MockMoistureSensorSlowDecline(pollingRate);
+        //ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate, service);
+        ISensor<Moisture> moistureSensor = new MoistureSensor(pollingRate); //REAL SENSOR
+        ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate, service); //REAL SENSOR
         collection.AddSingleton<ISensor<Moisture>>(moistureSensor);
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
 
@@ -65,7 +65,7 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<IPersonalityFactory, PersonalityFactory>();
         collection.AddSingleton<IMoistureImagesProvider, MoistureImagesProvider>();
         collection.AddSingleton<IBrightnessImagesProvider, BrightnessImagesProvider>();
-        collection.AddSingleton<IMoodInterpreter, WeightedMoodInterpreter>();
+        collection.AddSingleton<IMoodInterpreter, ExtremesMoodInterpreter>();
         collection.AddSingleton<IPersonality, NeutralPersonality>();
 
         collection.AddSingleton<Plant>();

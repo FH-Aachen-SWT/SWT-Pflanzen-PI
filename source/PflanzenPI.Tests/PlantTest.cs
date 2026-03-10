@@ -26,7 +26,7 @@ public class PlantTest
         var moistureBehaviourMock = new Mock<IMoistureBehaviour>();
         var moistureSensorMock = new Mock<ISensor<Moisture>>();
         
-        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000));
+        IPredictionService predictionService = new PredictionService(TimeSpan.FromMilliseconds(1000), 10, 10);
         
         sensorService.Register(moistureSensorMock.Object);
         sensorService.Register(mockBrightnessSensor.Object);

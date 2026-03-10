@@ -21,7 +21,7 @@ public class MockMoistureSensorSlowDecline : Sensor<Moisture>
     
     internal void SimuliereLesen(object? _)
     {
-        var startingValue = 90.0f;
+        var startingValue = 70.0f;
         var averageDecline = 0.000115741f; // average decline per second
         var rauschen = (float)Random.Shared.NextDouble() - 0.5f; // Zufälliger Wert von -0,5 bis 0.5 
         var rauschenIntensity = 0.03f; // Vorfaktor vom Rauschen; should always be chosen relative to the averageDecline and idealy bigger than the average decline so that a move up is possible through disturbance
