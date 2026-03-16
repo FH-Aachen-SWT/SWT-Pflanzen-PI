@@ -2,10 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PflanzenPi.Plants;
 using PflanzenPi.Plants.Behaviours.BrightnessBehaviours;
 using PflanzenPi.Plants.Behaviours.MoistureBehaviours;
-using PflanzenPi.Plants.DBAdapter;
 using PflanzenPi.Plants.PredictionModel;
 using PflanzenPi.Sensor.Sensors;
-using PflanzenPi.Sensor.Sensors.Mocks;
 using PflanzenPi.UI.Tamagotchis;
 using PflanzenPi.UI.Tamagotchis.Moods;
 using PflanzenPi.UI.Tamagotchis.Personalities;
@@ -36,11 +34,11 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<ITamagotchiRepository, TamagotchiRepository>();
 
         // Sensor
-        TimeSpan pollingRate = TimeSpan.FromMilliseconds(10000);
+        TimeSpan pollingRate = TimeSpan.FromMilliseconds(1000);
         //ISensor<Moisture> moistureSensor = new MockMoistureSensorSlowDecline(pollingRate);
         //ISensor<Brightness> brightnessSensor = new MockBrightnessSensorSine(30000, pollingRate, service);
         ISensor<Moisture> moistureSensor = new MoistureSensor(pollingRate); //REAL SENSOR
-        ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate, service); //REAL SENSOR
+        ISensor<Brightness> brightnessSensor = new BrightnessSensor(pollingRate); //REAL SENSOR
         collection.AddSingleton<ISensor<Moisture>>(moistureSensor);
         collection.AddSingleton<ISensor<Brightness>>(brightnessSensor);
 

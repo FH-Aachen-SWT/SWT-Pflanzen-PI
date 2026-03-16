@@ -18,7 +18,7 @@ public class BrightnessSensorTest
 
         serviceMock.Setup(s => s.GetDLIAsync()).ReturnsAsync(5);
         
-        var ms = new BrightnessSensor(interval, serviceMock.Object, adc.Object);
+        var ms = new BrightnessSensor(interval, adc.Object);
 
         await Task.Delay(TimeSpan.FromSeconds(2));
 
