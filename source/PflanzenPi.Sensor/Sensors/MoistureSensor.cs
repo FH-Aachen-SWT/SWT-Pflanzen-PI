@@ -48,5 +48,6 @@ public class MoistureSensor : Sensor<Moisture>
         float calibratedPercentage = Math.Clamp(-(100/43)*(percentage-67),0f,100f);
         Moisture moisture = new Moisture(calibratedPercentage);
         Publish(moisture);
+        Console.WriteLine($"Moisture: {calibratedPercentage}");
     }
 }

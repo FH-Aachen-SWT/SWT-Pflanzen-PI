@@ -30,15 +30,21 @@ public class PredictionService : IPredictionService
         if (_samples++ != 0)
         {
             float difference = moisture - _lastMoisture;
-            if (Math.Abs(difference) < 0.5f * _pollingRate.TotalSeconds )// [value] * pollingRate.TotalSeconds to make sure weird values reset the prediction. The larger the pollingRate, the better the model
+            if (Math.Abs(difference) < 2.0f * _pollingRate.TotalSeconds )// [value] * pollingRate.TotalSeconds to make sure weird values reset the prediction. The larger the pollingRate, the better the model
             { 
                 _addedDifference += difference;
                 _acceptedSamples++;
             }
-            else // resets model if the moisture changes by more than 5% in 10 seconds
+            else if (Math.Abs(difference) >= 10.0f * _pollingRate.TotalSeconds)
             {
                 Reset();
             }
+            // Für Präsentation raus damit immer predicted wird
+            /*else // resets model if the moisture changes by more than 5% in 10 seconds
+            {
+                Reset();
+            }
+            */
         }
         _lastMoisture = moisture;
     }
