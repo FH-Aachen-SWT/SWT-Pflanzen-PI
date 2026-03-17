@@ -30,7 +30,7 @@ public class PredictionService : IPredictionService
         if (_samples++ != 0)
         {
             float difference = moisture - _lastMoisture;
-            if (Math.Abs(difference) < 2.0f * _pollingRate.TotalSeconds )// [value] * pollingRate.TotalSeconds to make sure weird values reset the prediction. The larger the pollingRate, the better the model
+            if (_lastMoisture == -1.0f || Math.Abs(difference) < 2.0f * _pollingRate.TotalSeconds )// [value] * pollingRate.TotalSeconds to make sure weird values reset the prediction. The larger the pollingRate, the better the model
             { 
                 _addedDifference += difference;
                 _acceptedSamples++;
