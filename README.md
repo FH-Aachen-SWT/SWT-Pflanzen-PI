@@ -1,5 +1,7 @@
 # SWT-Pflanzen-PI 🌱
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge)](https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo})
+
 ## Projektübersicht
 
 **SWT-Pflanzen-PI** ist ein hochschulinternes Softwaretechnikprojekt eines fünfköpfigen MATSE-Entwicklerteams der FH Aachen. Ziel ist die Entwicklung eines interaktiven Prototyps, der reale Pflanzen mit digitaler Darstellung verknüpft, um Verantwortung, Nachhaltigkeit und technisches Verständnis spielerisch zu vermitteln.
